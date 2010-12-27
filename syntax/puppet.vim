@@ -2,7 +2,7 @@
 " Filename:     puppet.vim
 " Language:     puppet configuration file 
 " Maintainer:   Luke Kanies <luke@madstop.com>
-" URL:          
+" URL:          https://github.com/puppetlabs/puppet/blob/master/ext/vim/syntax/puppet.vim
 " Last Change: 
 " Version:      
 "
