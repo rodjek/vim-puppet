@@ -17,13 +17,15 @@ elseif exists("b:current_syntax")
 endif
 
 syn region  puppetDefine        start="^\s*\(class\|define\|site\|node\)\s+" end="{" contains=puppetDefType,puppetDefName,puppetDefArguments
-syn keyword puppetDefType       class define site node inherits contained
-syn keyword puppetInherits      inherits contained
-syn region  puppetDefArguments  start="(" end=")" contains=puppetArgument
+syn match   puppetDefType       "\(class\|define\|site\|node\|inherits\)" contained
+syn match   puppetInherits      "inherits" contained
+syn region  puppetDefArguments  start="(" end=")\s*" contains=puppetArgument
 syn match   puppetArgument      "\w\+" contained
-syn match   puppetDefName     "\(\w\|\:\)\+" contained
+syn match   puppetDefName     "\(\w\|\:\)\+\s*" contained
 
 syn match   puppetInstance           "\(\w\|\:\)\+\s*{" contains=puppetTypeBrace,puppetTypeName,puppetTypeDefault
+syn match   puppetExisting       "[A-Z\:]\(\w\|\:\)*\[" contains=puppetTypeDefault,puppetTypeBrack
+syn match   puppetTypeBrack      "\[" contained
 syn match   puppetTypeBrace       "{" contained
 syn match   puppetTypeName       "[a-z]\w*" contained
 syn match   puppetTypeDefault    "[A-Z]\w*" contained
@@ -37,6 +39,8 @@ syn match   puppetParen           "("
 syn match   puppetParen           ")"
 syn match   puppetBrace           "{"
 syn match   puppetBrace           "}"
+syn match   puppetBrack           "\["
+syn match   puppetBrack           "\]"
 
 syn region  puppetString start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=puppetVariable
 syn region  puppetString start=+'+ skip=+\\\\\|\\"+ end=+'+
@@ -69,13 +73,15 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   HiLink puppetComment              Comment
   HiLink puppetString               String
   HiLink puppetTodo                 Todo
+  HiLink puppetBrack                Delimiter
+  HiLink puppetTypeBrack            Delimiter
   HiLink puppetBrace                Delimiter
   HiLink puppetTypeBrace            Delimiter
   HiLink puppetParen                Delimiter
   HiLink puppetDelimiter            Delimiter
   HiLink puppetControl              Statement
   HiLink puppetDefType              Define
-  HiLink puppetDefName              Type
+  HiLink puppetDefName              Identifier
   HiLink puppetTypeName             Statement
   HiLink puppetTypeDefault          Type
   HiLink puppetParamName            Identifier
