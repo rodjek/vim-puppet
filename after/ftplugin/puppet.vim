@@ -1,4 +1,4 @@
-inoremap <silent> > ><Esc>:call <SID>puppetalign()<CR>A
+inoremap <buffer> <silent> > ><Esc>:call <SID>puppetalign()<CR>A
 function! s:puppetalign()
     let p = '^\s*\w+\s*=>.*$'
     let lineContainsHashrocket = getline('.') =~# '^\s*\w+\s*=>'
