@@ -51,6 +51,7 @@ syn keyword puppetControl    case default
 
 " comments last overriding everything else
 syn match   puppetComment            "\s*#.*$" contains=puppetTodo
+syn region  puppetMultilineComment  start="/\*" end="\*/" contains=puppetTodo
 syn keyword puppetTodo               TODO NOTE FIXME XXX contained
 
 " Define the default highlighting.
@@ -71,6 +72,7 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   HiLink puppetKeyword              Define
   HiLink puppetTypeDefs             Define
   HiLink puppetComment              Comment
+  HiLink puppetMultilineComment     Comment
   HiLink puppetString               String
   HiLink puppetTodo                 Todo
   HiLink puppetBrack                Delimiter
