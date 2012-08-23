@@ -33,7 +33,7 @@ syn match   puppetTypeDefault    "[A-Z]\w*" contained
 syn match   puppetParam           "\w\+\s*\(=\|+\)>" contains=puppetTypeRArrow,puppetParamName
 syn match   puppetParamRArrow       "\(=\|+\)>" contained
 syn match   puppetParamName       "\w\+" contained
-syn match   puppetVariable           "$\(\w\+\(::\w\+\)*\|{\w\+\(::\w\+\)*}\)"
+syn match   puppetVariable           "$\(\(\(::\)\?\w\+\)\+\|{\(\(::\)\?\w\+\)\+}\)"
 syn match   puppetParen           "("
 syn match   puppetParen           ")"
 syn match   puppetBrace           "{"
