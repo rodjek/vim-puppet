@@ -67,8 +67,8 @@ function! GetPuppetIndent()
         let ind -= &sw
     endif
 
-    " Match } }, }; ] ]: )
-    if line =~ '^\s*\(}\(,\|;\)\?$\|]:\?$\|)\)'
+    " Match } }, }; ] ]: ], ]; )
+    if line =~ '^\s*\(}\(,\|;\)\?$\|]:\|],\|];\?$\|)\)'
         let ind = indent(s:OpenBrace(v:lnum))
     endif
 
