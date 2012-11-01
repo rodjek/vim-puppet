@@ -16,6 +16,10 @@ elseif exists("b:current_syntax")
   finish
 endif
 
+" require statement
+syn match puppetKeyword "require\s"
+syn match puppetString "[^require\s].*$"
+
 syn region  puppetDefine        start="^\s*\(class\|define\|site\|node\)\s+" end="{" contains=puppetDefType,puppetDefName,puppetDefArguments
 syn match   puppetDefType       "\(class\|define\|site\|node\|inherits\)" contained
 syn match   puppetInherits      "inherits" contained
