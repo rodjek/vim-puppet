@@ -92,4 +92,6 @@ endif
 
 let b:current_syntax = "puppet"
 
+
+" based on http://comments.gmane.org/gmane.comp.sysutils.puppet.user/6152
 set iskeyword=-,:,@,48-57,_,192-255
