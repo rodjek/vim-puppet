@@ -47,6 +47,8 @@ syn match   puppetBrace           "{"
 syn match   puppetBrace           "}"
 syn match   puppetBrack           "\["
 syn match   puppetBrack           "\]"
+syn match   puppetBrack           "<|"
+syn match   puppetBrack           "|>"
 
 " match 'present' in 'ensure => present'
 " match '2755' in 'mode => 2755'
@@ -79,12 +81,12 @@ syn keyword puppetKeyword       import inherits include require
 syn keyword puppetControl       case default if else elsif
 syn keyword puppetSpecial       true false undef
 
+syn match   puppetClass         "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)" contains=@NoSpell
+
 " comments last overriding everything else
 syn match   puppetComment            "\s*#.*$" contains=puppetTodo,@Spell
 syn region  puppetMultilineComment  start="/\*" end="\*/" contains=puppetTodo,@Spell
 syn keyword puppetTodo               TODO NOTE FIXME XXX BUG HACK contained
-
-syn match   puppetClass         "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)" contains=@NoSpell
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
@@ -109,6 +111,12 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   HiLink puppetParamSpecial         Boolean
   HiLink puppetSpecial              Special
   HiLink puppetTodo                 Todo
+  HiLink puppetBrack                Delimiter
+  HiLink puppetTypeBrack            Delimiter
+  HiLink puppetBrace                Delimiter
+  HiLink puppetTypeBrace            Delimiter
+  HiLink puppetParen                Delimiter
+  HiLink puppetDelimiter            Delimiter
   HiLink puppetControl              Statement
   HiLink puppetDefType              Define
   HiLink puppetDefName              Type
