@@ -75,7 +75,7 @@ syn match   puppetString        "/[^/]*/"
 syn match   puppetNotVariable   "\\$\w\+" contained
 syn match   puppetNotVariable   "\\${\w\+}" contained
 
-syn keyword puppetKeyword       import inherits include
+syn keyword puppetKeyword       import inherits include require
 syn keyword puppetControl       case default if else elsif
 syn keyword puppetSpecial       true false undef
 
