@@ -81,7 +81,7 @@ syn keyword puppetKeyword       import inherits include require
 syn keyword puppetControl       case default if else elsif
 syn keyword puppetSpecial       true false undef
 
-syn match   puppetClass         "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)" contains=@NoSpell
+syn match   puppetClass         "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)\+" contains=@NoSpell
 
 " comments last overriding everything else
 syn match   puppetComment            "\s*#.*$" contains=puppetTodo,@Spell
