@@ -30,11 +30,10 @@ syn match   puppetTypeBrace       "{" contained
 syn match   puppetTypeName       "[a-z]\w*" contained
 syn match   puppetTypeDefault    "[A-Z]\w*" contained
 
-syn match   puppetParam           "\w\+\s*=>" contains=puppetTypeRArrow,puppetParamName
-syn match   puppetParamRArrow       "=>" contained
+syn match   puppetParam           "\w\+\s*\(=\|+\)>" contains=puppetTypeRArrow,puppetParamName
+syn match   puppetParamRArrow       "\(=\|+\)>" contained
 syn match   puppetParamName       "\w\+" contained
-syn match   puppetVariable           "$\w\+"
-syn match   puppetVariable           "${\w\+}"
+syn match   puppetVariable           "$\(\(\(::\)\?\w\+\)\+\|{\(\(::\)\?\w\+\)\+}\)"
 syn match   puppetParen           "("
 syn match   puppetParen           ")"
 syn match   puppetBrace           "{"
@@ -51,6 +50,7 @@ syn keyword puppetControl    case default
 
 " comments last overriding everything else
 syn match   puppetComment            "\s*#.*$" contains=puppetTodo
+syn region  puppetMultilineComment  start="/\*" end="\*/" contains=puppetTodo
 syn keyword puppetTodo               TODO NOTE FIXME XXX contained
 
 " Define the default highlighting.
@@ -71,6 +71,7 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   HiLink puppetKeyword              Define
   HiLink puppetTypeDefs             Define
   HiLink puppetComment              Comment
+  HiLink puppetMultilineComment     Comment
   HiLink puppetString               String
   HiLink puppetTodo                 Todo
   HiLink puppetBrack                Delimiter
