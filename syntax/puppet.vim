@@ -74,9 +74,10 @@ syntax cluster puppetArgs contains=puppetString,puppetFunction,puppetComma,puppe
 syntax region puppetSelector start="\v\?\s\{" end="\}" contained contains=@puppetArgs,puppetOperator,puppetDefault
 
 " Strings
-syntax region puppetString start=/\v"/ skip=/\v\\"/ end=/\v"/
+syntax region puppetString start=/\v"/ skip=/\v\\"/ end=/\v"/ contains=puppetStrVar
 syntax region puppetString start=/\v'/ skip=/\v\\'/ end=/\v'/
 syntax region puppetString start=+\v/+ skip=+\v\\/+ end=+\v/+
+syntax match  puppetStrVar "\v\$\{(\:\:)?[a-z0-9_]+(\:\:[a-z0-9_]+)*\}" contained
 
 " Array
 syntax region puppetArray start="\v\[" end="\v\]" contained contains=@puppetArgs
@@ -100,6 +101,7 @@ highlight link puppetDefName     Type
 highlight link puppetDefine      Delimiter
 highlight link puppetDefArgs     Delimiter
 highlight link puppetVariable    Identifier
+highlight link puppetStrVar      Identifier
 highlight link puppetBoolean     Boolean
 highlight link puppetDefault     Label
 
