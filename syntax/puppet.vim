@@ -12,14 +12,18 @@ syntax region  puppetDefArgs start="(" end=")" contains=@puppetArgs,puppetOperat
 syntax match puppetInclude "\v\s*(include|require)\s+" nextgroup=puppetResName
 
 " resource instances
-syntax region  puppetResource start="^\s*[A-Za-z][a-z0-9_]*\(\:\:[A-Za-z][a-z0-9_]*\)*\s\+{" skip="\:\:" end="\:" contains=puppetResName,@puppetResTitle
-syntax match   puppetResName  "[A-Za-z][a-z0-9_]*\(\:\:[A-Za-z][a-z0-9_]*\)*" contained
+syntax region  puppetResource start="^\s*[a-z][a-z0-9_]*\(\:\:[a-z][a-z0-9_]*\)*\s\+{" skip="\:\:" end="\:" contains=puppetResName,@puppetResTitle
+syntax match   puppetResName  "[a-z][a-z0-9_]*\(\:\:[a-z][a-z0-9_]*\)*" contained
 syntax cluster puppetResTitle contains=puppetString,puppetVariable,puppetArray
 syntax region  puppetResAttr  start="\v\s*[a-z0-9_]+\s*\=\>" end="\(,\|;\|$\)" contains=puppetDefault,puppetResParam,puppetOperator,@puppetArgs
 syntax match   puppetResParam "\v[a-z0-9_]+" contained
 
 " resource refs
 syntax match puppetRefType "\v(\:\:)?[A-Z][a-z0-9_]*(\:\:[A-Z][a-z0-9]+)*" contained nextgroup=@puppetArgs
+
+" resource overrides
+syntax region puppetResOverride start="^\s*[A-Z][A-Za-z0-9_\:]\+\s*{" end="}" contains=puppetResOverType,puppetResAttr
+syntax match  puppetResOverType "\v(\:\:)?[A-Z][a-z0-9_]*(\:\:[A-Z][a-z0-9_]*)*" contained
 
 " operators
 syntax match puppetOperator "\v!" contained
@@ -77,6 +81,8 @@ syntax region puppetString start=+\v/+ skip=+\v\\/+ end=+\v/+
 " Array
 syntax region puppetArray start="\v\[" end="\v\]" contained contains=@puppetArgs
 
+highlight link puppetResOverride Delimiter
+highlight link puppetResOverType Typedef
 highlight link puppetSelector    Delimiter
 
 highlight link puppetArray       Delimiter
