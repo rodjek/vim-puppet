@@ -63,6 +63,7 @@ syntax match puppetParen "\v\)"
 syntax match puppetBrace "\v\{"
 syntax match puppetBrace "\v\}"
 syntax match puppetComma "\v,"
+syntax match puppetColon "\v\:"
 
 " Functions
 syntax region puppetFunction start="\w\+(" end=")" contains=puppetFuncName,@puppetArgs
@@ -85,7 +86,7 @@ syntax region puppetArray start="\v\[" end="\v\]" contained contains=@puppetArgs
 highlight link puppetResOverride Delimiter
 highlight link puppetResOverType Typedef
 highlight link puppetSelector    Delimiter
-
+highlight link puppetColon       Delimiter
 highlight link puppetArray       Delimiter
 highlight link puppetRefType     Label
 highlight link puppetComment     Comment
