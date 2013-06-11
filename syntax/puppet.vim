@@ -50,7 +50,7 @@ syntax keyword puppetConditional if else elsif unless case
 
 " Variables
 syntax match  puppetVariable  "\v\$(\:\:)?[a-z0-9_]+(\:\:[a-z0-9_]+)*"
-syntax region puppetVarAssign start="\v\$[a-z0-9_\:]+\s*\=" end="\($\|}\)" contains=puppetVariable,puppetOperator,@puppetArgs
+syntax region puppetVarAssign start="\v\$[a-z0-9_\:]+\s*(\=|!)" end="\($\|}\)" contains=puppetVariable,puppetOperator,@puppetArgs
 
 " Comments
 syntax match  puppetComment "\v#.*$"
@@ -102,6 +102,7 @@ highlight link puppetDefine      Delimiter
 highlight link puppetDefArgs     Delimiter
 highlight link puppetVariable    Identifier
 highlight link puppetStrVar      Identifier
+highlight link puppetVarAssign   Delimiter
 highlight link puppetBoolean     Boolean
 highlight link puppetDefault     Label
 
