@@ -88,7 +88,7 @@ highlight link puppetResOverType Typedef
 highlight link puppetSelector    Delimiter
 highlight link puppetColon       Delimiter
 highlight link puppetArray       Delimiter
-highlight link puppetRefType     Label
+highlight link puppetRefType     Typedef
 highlight link puppetComment     Comment
 highlight link puppetString      String
 highlight link puppetOperator    Operator
