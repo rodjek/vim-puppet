@@ -5,8 +5,8 @@ endif
 " node, class, defined type definition headers
 syntax region  puppetDefine  start="^\s*\(class\|define\|node\)\s" end="{" contains=puppetDefType,puppetDefName,puppetDefArgs
 syntax keyword puppetDefType class define node inherits contained
-syntax match   puppetDefName "\v[a-z0-9\:]+" contained
 syntax region  puppetDefArgs start="(" end=")" contains=@puppetArgs,puppetOperator contained
+syntax match   puppetDefName "\v[a-z0-9\:_]+" contained
 
 " include & require class
 syntax match puppetInclude "\v\s*(include|require)\s+" nextgroup=puppetResName
