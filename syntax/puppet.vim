@@ -73,7 +73,7 @@ syn match   puppetVariable      "${[a-zA-Z0-9_:]\+}" contains=@NoSpell
 " don't match variables if preceded by a backslash.
 syn region  puppetString        start=+'+ skip=+\\\\\|\\'+ end=+'+
 syn region  puppetString        start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=puppetVariable,puppetNotVariable
-syn match   puppetString        "/[^/]*/"
+syn region  puppetRegex         start="/" skip="\\/" end="/"
 syn match   puppetNotVariable   "\\$\w\+" contained
 syn match   puppetNotVariable   "\\${\w\+}" contained
 
@@ -105,6 +105,7 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   HiLink puppetComment              Comment
   HiLink puppetMultilineComment     Comment
   HiLink puppetString               String
+  HiLink puppetRegex                Constant
   HiLink puppetParamKeyword         Keyword
   HiLink puppetParamDigits          String
   HiLink puppetNotVariable          String
