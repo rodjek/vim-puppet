@@ -26,7 +26,7 @@ Additional useful plugins
 Installation
 ------------
 
-If you're using pathogen to manage your vim modules (and if you're not, why
+If you're using [pathogen](https://github.com/tpope/vim-pathogen) to manage your vim modules (and if you're not, why
 aren't you), you can simply add this as a submodule in your `~/.vim/bundle/`
 directory.
 
