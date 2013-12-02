@@ -73,7 +73,6 @@ syn match   puppetVariable      "${[a-zA-Z0-9_:]\+}" contains=@NoSpell
 " don't match variables if preceded by a backslash.
 syn region  puppetString        start=+'+ skip=+\\\\\|\\'+ end=+'+
 syn region  puppetString        start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=puppetVariable,puppetNotVariable
-syn match   puppetString        "/[^/]*/"
 syn match   puppetNotVariable   "\\$\w\+" contained
 syn match   puppetNotVariable   "\\${\w\+}" contained
 
@@ -82,6 +81,28 @@ syn keyword puppetControl       case default if else elsif
 syn keyword puppetSpecial       true false undef
 
 syn match   puppetClass         "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)\+" contains=@NoSpell
+
+" Match the Regular Expression type
+" XXX: Puppet does not currently support a few features available in the
+" full Ruby Regexp class, namely, interpolation, lookbehind and named
+" sub-expressions.  Matches for these features are included in the
+" commented-out versions of puppetRegexParen and puppetRegexSubName,
+" plus the supporting groups puppetRegexAngBrack and puppetRegexTick.
+syn region  puppetRegex            start="/" skip="\\/" end="/" contains=puppetRegexParen,puppetRegexBrace,puppetRegexOrpuppetRegexBrack,puppetRegexComment
+syn match   puppetRegexParen       "(\(?\([imx]\{0,4}:\|[=!]\)\)\?" contains=puppetRegexSpecChar,puppetRegexSubName contained
+"syn match   puppetRegexParen       "(\(?\([imxo]\{0,4}:\|['<][[:alnum:]]\+[>']\|<?[=!]\)\)\?" contains=puppetRegexSpecChar,puppetRegexSubName contained
+syn match   puppetRegexParen       ")" contained
+syn match   puppetRegexBrace       "{" contained
+syn match   puppetRegexBrace       "}" contained
+syn match   puppetRegexBrack       "\[" contained
+syn match   puppetRegexBrack       "\]" contained
+"syn match   puppetRegexAngBrack    "<" contained
+"syn match   puppetRegexAngBrack    ">" contained
+"syn match   puppetRegexTick        +'+ contained
+syn match   puppetRegexOr          "|" contained
+"syn match   puppetRegexSubName     "['<][[:alnum:]]\+[>']" contains=puppetRegexAngBrack,puppetRegexTick contained
+syn match   puppetRegexSpecialChar "[?:imx]\|\(<?[=!]\)" contained
+syn region  puppetRegexComment     start="(?#" skip="\\)" end=")" contained
 
 " comments last overriding everything else
 syn match   puppetComment            "\s*#.*$" contains=puppetTodo,@Spell
@@ -106,6 +127,16 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   HiLink puppetComment              Comment
   HiLink puppetMultilineComment     Comment
   HiLink puppetString               String
+  HiLink puppetRegex                Constant
+  HiLink puppetRegexParen           Delimiter
+  HiLink puppetRegexBrace           Delimiter
+  HiLink puppetRegexBrack           Delimiter
+  HiLink puppetRegexAngBrack        Delimiter
+  HiLink puppetRegexTick            Delimiter
+  HiLink puppetRegexOr              Delimiter
+  HiLink puppetRegexSubName         Identifier
+  HiLink puppetRegexSpecChar        SpecialChar
+  HiLink puppetRegexComment         Comment
   HiLink puppetParamKeyword         Keyword
   HiLink puppetParamDigits          String
   HiLink puppetNotVariable          String
