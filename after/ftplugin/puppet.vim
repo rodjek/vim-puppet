@@ -10,7 +10,7 @@ function! s:puppetalign()
     endif
 endfunction
 
-function! s:puppet_gf()
+function! s:puppet_gf(cmd)
   let ret = []
   let line = getline('.')
   let puppet_root = ""
@@ -33,24 +33,26 @@ function! s:puppet_gf()
     endif
   endwhile
 
-  " The normal return value of gf. Return it in case no puppet root was found.
-  " This is not perfect, but something.
-  if puppet_root == ''
-    return expand('<cWORD>')
-  endif
-
   " Insert the puppet root and the path to the selected module's
   " files/ or templates/
-  if url != ""
-    let spl = split(url, '/')
-    let ret = [puppet_root] + spl[:1] + ['files'] + spl[2:]
-  elseif template != ""
-    let spl = split(template, '/')
-    let ret = [puppet_root, 'modules', spl[0], 'templates'] + spl[1:]
+  if puppet_root != ''
+    if url != ""
+      let spl = split(url, '/')
+      let ret = [puppet_root] + spl[:1] + ['files'] + spl[2:]
+    elseif template != ""
+      let spl = split(template, '/')
+      let ret = [puppet_root, 'modules', spl[0], 'templates'] + spl[1:]
+    endif
   endif
 
-  return join(ret, '/')
+  " No puppet root or match. Fallback to default behaviour!
+  if puppet_root == '' || empty(ret)
+    normal! gf
+    return
+  endif
+
+  exe a:cmd join(ret, "/")
 endfunction
 
-nmap <buffer> <silent> gf :edit `=<SID>puppet_gf()`<cr>
-nmap <buffer> <silent> <c-w>f :split `=<SID>puppet_gf()`<cr>
+nmap <buffer> <silent> gf :call <SID>puppet_gf('edit')<cr>
+nmap <buffer> <silent> <c-w>f :call <SID>puppet_gf('split')<cr>
