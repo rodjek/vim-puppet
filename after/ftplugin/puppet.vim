@@ -11,12 +11,16 @@ function! s:puppetalign()
 endfunction
 
 function! s:puppet_gf()
+  let ret = []
+  let line = getline('.')
   let puppet_root = ""
-  let word = matchstr(getline('.'), "'".'puppet:///\zsmodules.*\ze'."'")
+  let url = matchstr(line, "'puppet:///\\zsmodules.*\\ze'")
+  let template = matchstr(line, "template('\\zs.*\\ze')")
+
   let fn = fnamemodify(expand('%'), ":p")
   let old_fn = ""
 
-  " Find the puppet root, if any
+  " Scan upwards to find the puppet root
   while fn != old_fn
     let old_fn = fn
     let fn = fnamemodify(fn, ":h")
@@ -29,19 +33,23 @@ function! s:puppet_gf()
     endif
   endwhile
 
-  if puppet_root != "" && word != ""
-    " Insert the puppet root and the 'files' directory
-    let spl = split(word, '/')
-    let spl = insert(spl, puppet_root)
-    let spl = insert(spl, 'files', 3)
-
-    " Join it back and return it
-    return join(spl, '/')
+  " The normal return value of gf. Return it in case no puppet root was found.
+  " This is not perfect, but something.
+  if puppet_root == ''
+    return expand('<cWORD>')
   endif
 
-  " The normal return value of gf. Return it in case something goes wrong.
-  " This is not perfect, but something.
-  return expand('<cWORD>')
+  " Insert the puppet root and the path to the selected module's
+  " files/ or templates/
+  if url != ""
+    let spl = split(url, '/')
+    let ret = [puppet_root] + spl[:1] + ['files'] + spl[2:]
+  elseif template != ""
+    let spl = split(template, '/')
+    let ret = [puppet_root, 'modules', spl[0], 'templates'] + spl[1:]
+  endif
+
+  return join(ret, '/')
 endfunction
 
 nmap <buffer> <silent> gf :edit `=<SID>puppet_gf()`<cr>
