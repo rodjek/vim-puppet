@@ -62,7 +62,7 @@ syn match   puppetParamDigits   "[0-9]\+"
 " match 'template' in 'content => template("...")'
 syn match   puppetParam         "\w\+\s*[=+]>\s*\w\+\s*(" contains=puppetFunction,puppetParamName
 " statements
-syn region  puppetFunction      start="^\s*\(alert\|crit\|debug\|emerg\|err\|fail\|include\|info\|notice\|realize\|require\|search\|tag\|warning\)\s*(" end=")" contained contains=puppetString
+syn region  puppetFunction      start="^\s*\(alert\|contains\|crit\|debug\|emerg\|err\|fail\|include\|info\|notice\|realize\|require\|search\|tag\|warning\)\s*(" end=")" contained contains=puppetString
 " rvalues
 syn region  puppetFunction      start="^\s*\(defined\|file\|fqdn_rand\|generate\|inline_template\|regsubst\|sha1\|shellquote\|split\|sprintf\|tagged\|template\|versioncmp\)\s*(" end=")" contained contains=puppetString
 
@@ -76,7 +76,7 @@ syn region  puppetString        start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=pupp
 syn match   puppetNotVariable   "\\$\w\+" contained
 syn match   puppetNotVariable   "\\${\w\+}" contained
 
-syn keyword puppetKeyword       import inherits include require
+syn keyword puppetKeyword       contains import inherits include require
 syn keyword puppetControl       case default if else elsif
 syn keyword puppetSpecial       true false undef
 
