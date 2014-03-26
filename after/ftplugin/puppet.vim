@@ -1,11 +1,12 @@
-inoremap <buffer> <silent> > ><Esc>:call <SID>puppetalign()<CR>A
-function! s:puppetalign()
-    let p = '^\s*\w+\s*[=+]>.*$'
-    let lineContainsHashrocket = getline('.') =~# '^\s*\w+\s*[=+]>'
-    let hashrocketOnPrevLine = getline(line('.') - 1) =~# p
-    let hashrocketOnNextLine = getline(line('.') + 1) =~# p
-    if exists(':Tabularize') " && lineContainsHashrocket && (hashrocketOnPrevLine || hashrocketOnNextLine)
+if exists(':Tabularize')
+    inoremap <buffer> <silent> > ><Esc>:call <SID>puppetalign()<CR>a
+    function! s:puppetalign()
+        let p = '^\s*\w+\s*[=+]>.*$'
+        let column = strlen(substitute(getline('.')[0:col('.')],'\([^=]\|=[^>]\)','','g'))
+        let position = strlen(matchstr(getline('.')[0:col('.')],'.*=>\s*\zs.*'))
         Tabularize /=>/l1
         normal! 0
-    endif
-endfunction
+        echo repeat('\([^=]\|=[^>]\)*=>',column).'\s\{-\}'.repeat('.',position)
+        call search(repeat('\([^=]\|=[^>]\)*=>',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+    endfunction
+endif
