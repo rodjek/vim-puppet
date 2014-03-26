@@ -1,4 +1,8 @@
-if exists(':Tabularize')
+if !exists('g:puppet_align_hashes')
+    let g:puppet_align_hashes = 1
+endif
+
+if g:puppet_align_hashes && exists(':Tabularize')
     inoremap <buffer> <silent> > ><Esc>:call <SID>puppetalign()<CR>a
     function! s:puppetalign()
         let p = '^\s*\w+\s*[=+]>.*$'
