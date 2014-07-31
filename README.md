@@ -8,8 +8,8 @@ Provides
 
   * Formatting based on the latest Puppetlabs Style Guide
   * Syntax highlighting
-  * Automatic => alignment (when the
-    [tabular](https://github.com/godlygeek/tabular) plugin is also installed)
+  * Automatic => alignment (when the [tabular](https://github.com/godlygeek/tabular) plugin is also installed)
+    * If you don't like that, add `let g:puppet_align_hashes = 0` to your vimrc.
   * Doesn't require a bloated JRE
   * Doesn't take minutes to open
 
