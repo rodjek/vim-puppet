@@ -55,7 +55,7 @@ function! GetPuppetIndent()
         return ind
     endif
 
-    if pline =~ '\({\|\[\|(\|:\)$'
+    if pline =~ '\({\|\[\|(\|:\)\s*\(#.*\)\?$'
         let ind += &sw
     elseif pline =~ ';$' && pline !~ '[^:]\+:.*[=+]>.*'
         let ind -= &sw
