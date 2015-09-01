@@ -78,7 +78,7 @@ syn match   puppetNotVariable   "\\$\w\+" contained
 syn match   puppetNotVariable   "\\${\w\+}" contained
 
 syn keyword puppetKeyword       import inherits include require contain
-syn keyword puppetControl       case default if else elsif
+syn keyword puppetControl       case default if else elsif unless
 syn keyword puppetSpecial       true false undef
 
 syn match   puppetClass         "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)\+" contains=@NoSpell
