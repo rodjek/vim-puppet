@@ -51,7 +51,7 @@ function! GetPuppetIndent()
     let pline = getline(pnum)
     let ind = indent(pnum)
 
-    if pline =~ '\({\|\[\|(\|:\)$'
+    if pline =~ '\({\|\[\|(\|:\)\s*\(#.*\)\?$'
         let ind += &sw
     elseif pline =~ ';$' && pline !~ '[^:]\+:.*[=+]>.*'
         let ind -= &sw
