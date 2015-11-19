@@ -67,8 +67,8 @@ syn region  puppetFunction      start="^\s*\(alert\|crit\|debug\|emerg\|err\|fai
 " rvalues
 syn region  puppetFunction      start="^\s*\(defined\|file\|fqdn_rand\|generate\|inline_template\|regsubst\|sha1\|shellquote\|split\|sprintf\|tagged\|template\|versioncmp\)\s*(" end=")" contained contains=puppetString
 
-syn match   puppetVariable      "$[a-zA-Z0-9_:]\+" contains=@NoSpell
-syn match   puppetVariable      "${[a-zA-Z0-9_:]\+}" contains=@NoSpell
+syn match   puppetVariable      "$[a-zA-Z0-9_:\[\]]\+" contains=@NoSpell
+syn match   puppetVariable      "${[a-zA-Z0-9_:\[\]]\+}" contains=@NoSpell
 
 " match anything between simple/double quotes.
 " don't match variables if preceded by a backslash.
