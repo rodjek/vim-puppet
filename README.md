@@ -6,6 +6,7 @@ Make vim more Puppet friendly!
 Provides
 --------
 
+  * Partial Puppet 4 (future parser) support
   * Formatting based on the latest Puppetlabs Style Guide
   * Syntax highlighting
   * Automatic => alignment (when the [tabular](https://github.com/godlygeek/tabular) plugin is also installed)
@@ -32,7 +33,7 @@ directory.
 
 My entire home directory is a git repository, so for me it's simply a case of
 
-    $ git submodule add -f git://github.com/rodjek/vim-puppet.git .vim/bundle/puppet
+    $ git submodule add -f git://github.com/voxpupuli/vim-puppet.git .vim/bundle/puppet
 
 If you're not using pathogen, you can just manually place the files in the
 appropriate places under `~/.vim/`
