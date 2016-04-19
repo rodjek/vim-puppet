@@ -7,6 +7,7 @@ Provides
 --------
 
   * Partial Puppet 4 (future parser) support
+  * Partial Puppet Orchestrator support
   * Formatting based on the latest Puppetlabs Style Guide
   * Syntax highlighting
   * Automatic => alignment (when the [tabular](https://github.com/godlygeek/tabular) plugin is also installed)
