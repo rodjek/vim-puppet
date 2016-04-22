@@ -16,9 +16,9 @@ elseif exists("b:current_syntax")
   finish
 endif
 
-" match class/definition/node declarations
-syn region  puppetDefine        start="^\s*\(class\|define\|node\)\s" end="{" contains=puppetDefType,puppetDefName,puppetDefArguments,puppetNodeRe,@NoSpell
-syn keyword puppetDefType       class define node inherits contained
+" match class/definition/node declarations/application
+syn region  puppetDefine        start="^\s*\(class\|define\|node\|application\)\s" end="{" contains=puppetDefType,puppetDefName,puppetDefArguments,puppetNodeRe,@NoSpell
+syn keyword puppetDefType       class define node inherits application contained
 syn region  puppetDefArguments  start="(" end=")" contained contains=puppetArgument,puppetString,puppetComment,puppetMultilineComment,puppetDataTypes
 syn match   puppetArgument      "\w\+" contained
 syn match   puppetArgument      "\$\w\+" contained
@@ -77,7 +77,7 @@ syn region  puppetString        start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=pupp
 syn match   puppetNotVariable   "\\$\w\+" contained
 syn match   puppetNotVariable   "\\${\w\+}" contained
 
-syn keyword puppetKeyword       import inherits include require contain
+syn keyword puppetKeyword       import inherits include require contain produces
 syn keyword puppetControl       case default if else elsif unless
 syn keyword puppetSpecial       true false undef
 
