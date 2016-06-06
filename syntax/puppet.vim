@@ -16,72 +16,63 @@ elseif exists("b:current_syntax")
   finish
 endif
 
+syn match    puppetBraces "{}"       contained transparent
+syn match    puppetParens "()"       contained transparent
+
 " match class/definition/node declarations/application
-syn region  puppetDefine        start="^\s*\(class\|define\|node\|application\)\s" end="{" contains=puppetDefType,puppetDefName,puppetDefArguments,puppetNodeRe,@NoSpell
-syn keyword puppetDefType       class define node inherits application contained
-syn region  puppetDefArguments  start="(" end=")" contained contains=puppetArgument,puppetString,puppetComment,puppetMultilineComment,puppetDataTypes
-syn match   puppetArgument      "\w\+" contained
-syn match   puppetArgument      "\$\w\+" contained
-syn match   puppetArgument      "'[^']+'" contained
-syn match   puppetArgument      '"[^"]+"' contained
-syn match   puppetDefName       "\w\+" contained
-syn match   puppetNodeRe        "/.*/" contained
-syn keyword puppetDataTypes     String Integer Float Numeric Boolean Array Hash Regexp Undef Default Resource Class Scalar Collection Variant Data Pattern Enum Tuple Struct Optional Catalogentry Type Any Callable
+syn region   puppetDefine            start="\(\<class\>\|\<define\>\|\<application\>\)\s\{-}[a-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)*" end="{"me=s-1 nextgroup=puppetDefineContent contains=puppetDefType,puppetDefArguments,puppetClassInherit
+syn match    puppetDefType           "\(\<class\>\|\<define\>\|\<node\>\|\<application\>\)" contained
+syn region   puppetDefArguments      matchgroup=puppetParens start="("	end=")"		   nextgroup=puppetClassInherit,puppetDefineContent contained contains=TOP skipwhite skipempty
+syn match    puppetClassInherit      "inherits\s.*{"me=e-1 contains=puppetKeyword contained
+syn region   puppetDefineContent     matchgroup=puppetBraces start="{"	end="}"		   contained contains=TOP fold
+syn keyword  puppetDataTypes         String Integer Float Numeric Boolean Array Hash Regexp Undef Default Resource Class Scalar Collection Variant Data Pattern Enum Tuple Struct Optional Catalogentry Type Any Callable
+syn keyword  puppetParamKeyword      present absent purged latest installed running stopped mounted unmounted role configured file directory link on_failure contained
 
-" match 'foo' in 'class foo { ...'
-" match 'foo::bar' in 'class foo::bar { ...'
-" match 'Foo::Bar' in 'Foo::Bar["..."]
-"FIXME: "Foo-bar" doesn't get highlighted as expected, although "foo-bar" does.
-syn match   puppetInstance      "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)*\s*{" contains=puppetTypeName,puppetTypeDefault,@NoSpell
-syn match   puppetInstance      "[A-Z][a-z_-]\+\(::[A-Z][a-z_-]\+\)*\s*[[{]" contains=puppetTypeName,puppetTypeDefault,@NoSpell
-syn match   puppetInstance      "[A-Z][a-z_-]\+\(::[A-Z][a-z_-]\+\)*\s*<\?<|" contains=puppetTypeName,puppetTypeDefault,@NoSpell
-syn match   puppetTypeName      "[a-z]\w*" contained
-syn match   puppetTypeDefault   "[A-Z]\w*" contained
+syn cluster  puppetNotTop            contains=puppetVariable,puppetString,puppetParamKeyword,puppetSpecial,puppetBoolean,puppetControl,puppetDefType
 
-syn match   puppetParam           "\w\+\s*\(=\|+\)>" contains=puppetTypeRArrow,puppetParamName
-syn match   puppetParamRArrow       "\(=\|+\)>" contained
-syn match   puppetParamName       "\w\+" contained contains=@NoSpell
-syn match   puppetVariable        "$\(\(::\)\?\w\+\|{\(::\)\?\w\+}\)" 
-syn match   puppetParen           "("
-syn match   puppetParen           ")"
-syn match   puppetBrace           "{"
-syn match   puppetBrace           "}"
-syn match   puppetBrack           "\["
-syn match   puppetBrack           "\]"
-syn match   puppetBrack           "<|"
-syn match   puppetBrack           "|>"
+syn region   puppetNode              start="\<node\>" end="{"me=s-1 contains=puppetDefType,puppetRegex,puppetString nextgroup=puppetNodeContent skipwhite skipempty extend
+syn region   puppetNodeContent	     matchgroup=puppetBraces start=/{/	end=/}/ contains=ALLBUT,puppetNode transparent fold contained keepend
 
-" match 'present' in 'ensure => present'
-" match '2755' in 'mode => 2755'
-" don't match 'bar' in 'foo => bar'
-syn match   puppetParam         "\w\+\s*[=+]>\s*[a-z0-9]\+" contains=puppetParamString,puppetParamName
-syn match   puppetParamString   "[=+]>\s*\w\+" contains=puppetParamKeyword,puppetParamSpecial,puppetParamDigits contained
-syn keyword puppetParamKeyword  present absent purged latest installed running stopped mounted unmounted role configured file directory link on_failure contained
-syn keyword puppetParamSpecial  true false undef contained
-syn match   puppetParamDigits   "[0-9]\+"
+syn match    puppetResource	         "^@\?@\?[a-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)*\s\{-}{"me=e-1	    nextgroup=puppetResourceContent contains=ALLBUT,@puppetNotTop,puppetNode
+syn match    puppetResource	         "\s@\?@\?[a-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)*\s\{-}{"me=e-1	  nextgroup=puppetResourceContent contains=ALLBUT,@puppetNotTop,puppetNode
+syn match    puppetResource	         "@\?@\?[A-Z][a-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)*\s\{-}{"me=e-1	nextgroup=puppetResourceContent
+syn match    puppetResource	         "[A-Z][a-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)*\s\{-}\["me=e-1	    nextgroup=puppetResourceContent
+syn match    puppetResource	         "[A-Z][a-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)*\s\{-}<<|"me=e-3	    nextgroup=puppetResourceContent
+syn match    puppetResource	         "[A-Z][a-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)*\s\{-}<|"me=e-2	    nextgroup=puppetResourceContent
+syn region   puppetResourceContent	 matchgroup=puppetBraces start="{"	end="}"		contained contains=ALLBUT,puppetNode extend fold skipwhite skipempty
+syn region   puppetControls          matchgroup=puppetControl start="\(\<if\>\|\<case\>\|\<elseif\>\)" end="{"me=s-1 contains=puppetDefArguments,puppetClassInherit,puppetControl skipwhite skipempty extend fold
 
-" match 'template' in 'content => template("...")'
-syn match   puppetParam         "\w\+\s*[=+]>\s*\w\+\s*(" contains=puppetFunction,puppetParamName
-" statements
-syn region  puppetFunction      start="^\s*\(alert\|crit\|debug\|emerg\|err\|fail\|include\|info\|notice\|realize\|require\|search\|tag\|warning\)\s*(" end=")" contained contains=puppetString
-" rvalues
-syn region  puppetFunction      start="^\s*\(defined\|file\|fqdn_rand\|generate\|inline_template\|regsubst\|sha1\|shellquote\|split\|sprintf\|tagged\|template\|versioncmp\)\s*(" end=")" contained contains=puppetString
+syn match    puppetFunctionName      "[A-Za-z0-9_-]*("me=e-1	  nextgroup=puppetFunctionParams skipwhite
+syn match    puppetFunctionName      "[A-Za-z0-9_-]*\s*("me=e-1	nextgroup=puppetFunctionParams skipwhite
+syn region   puppetFunctionParams    matchgroup=puppetParens start="("lc=-1	end=")"lc=-1		   contained skipwhite contains=ALL
 
-syn match   puppetVariable      "$[a-zA-Z0-9_:]\+" contains=@NoSpell
-syn match   puppetVariable      "${[a-zA-Z0-9_:]\+}" contains=@NoSpell
+syn match    puppetParamDigits       "[0-9]\+"
+
+syn match    puppetParamName         "\w\+\s*[=+]>"me=e-2 contains=puppetParamName
+syn match    puppetVariable          "${\?\(::\)\?[a-z][a-zA-Z0-9_]*\(::[a-z][a-zA-Z0-9_]*\)*}\?" contains=@NoSpell
+syn match    puppetParen             "("
+syn match    puppetParen             ")"
+syn match    puppetBrace             "{"
+syn match    puppetBrace             "}"
+syn match    puppetBrack             "\["
+syn match    puppetBrack             "\]"
+syn match    puppetBrack             "<|"
+syn match    puppetBrack             "|>"
+syn match    puppetBrack             "<<|"
+syn match    puppetBrack             "|>>"
 
 " match anything between simple/double quotes.
 " don't match variables if preceded by a backslash.
-syn region  puppetString        start=+'+ skip=+\\\\\|\\'+ end=+'+
-syn region  puppetString        start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=puppetVariable,puppetNotVariable
-syn match   puppetNotVariable   "\\$\w\+" contained
-syn match   puppetNotVariable   "\\${\w\+}" contained
+syn region   puppetString            start=+'+ skip=+\\\\\|\\'+ end=+'+
+syn region   puppetString            start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=puppetVariable,puppetNotVariable
+syn match    puppetNotVariable       "\\$\w\+" contained
+syn match    puppetNotVariable       "\\${\w\+}" contained
 
-syn keyword puppetKeyword       import inherits include require contain produces
-syn keyword puppetControl       case default if else elsif unless
-syn keyword puppetSpecial       true false undef
-
-syn match   puppetClass         "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)\+" contains=@NoSpell
+syn keyword  puppetKeyword           import inherits include require contain produces
+syn keyword  puppetControl           case default if else elsif unless
+syn keyword  puppetSpecial           undef
+syn keyword  puppetOperator          and or in
+syn keyword  puppetBoolean           true false
 
 " Match the Regular Expression type
 " XXX: Puppet does not currently support a few features available in the
@@ -89,27 +80,33 @@ syn match   puppetClass         "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)\+" contain
 " sub-expressions.  Matches for these features are included in the
 " commented-out versions of puppetRegexParen and puppetRegexSubName,
 " plus the supporting groups puppetRegexAngBrack and puppetRegexTick.
-syn region  puppetRegex            start="/" skip="\\/" end="/" contains=puppetRegexParen,puppetRegexBrace,puppetRegexOrpuppetRegexBrack,puppetRegexComment
-syn match   puppetRegexParen       "(\(?\([imx]\{0,4}:\|[=!]\)\)\?" contains=puppetRegexSpecChar,puppetRegexSubName contained
+syn region   puppetRegex             start="/" skip="\\/" end="/" contains=puppetRegexParen,puppetRegexBrace,puppetRegexOrpuppetRegexBrack,puppetRegexComment
+""syn match   puppetRegexParen       "(\(?\([imx]\{0,4}:\|[=!]\)\)\?" contains=puppetRegexSpecChar,puppetRegexSubName contained
 "syn match   puppetRegexParen       "(\(?\([imxo]\{0,4}:\|['<][[:alnum:]]\+[>']\|<?[=!]\)\)\?" contains=puppetRegexSpecChar,puppetRegexSubName contained
-syn match   puppetRegexParen       ")" contained
-syn match   puppetRegexBrace       "{" contained
-syn match   puppetRegexBrace       "}" contained
-syn match   puppetRegexBrack       "\[" contained
-syn match   puppetRegexBrack       "\]" contained
+"syn match   puppetRegexParen       ")" contained
+""syn match   puppetRegexBrace       "{" contained
+""syn match   puppetRegexBrace       "}" contained
+""syn match   puppetRegexBrack       "\[" contained
+""syn match   puppetRegexBrack       "\]" contained
 "syn match   puppetRegexAngBrack    "<" contained
 "syn match   puppetRegexAngBrack    ">" contained
 "syn match   puppetRegexTick        +'+ contained
-syn match   puppetRegexOr          "|" contained
+""syn match   puppetRegexOr          "|" contained
 "syn match   puppetRegexSubName     "['<][[:alnum:]]\+[>']" contains=puppetRegexAngBrack,puppetRegexTick contained
-syn match   puppetRegexSpecialChar "[?:imx]\|\(<?[=!]\)" contained
-syn region  puppetRegexComment     start="(?#" skip="\\)" end=")" contained
+"syn match   puppetRegexSpecialChar "[?:imx]\|\(<?[=!]\)" contained
+""syn region  puppetRegexComment     start="(?#" skip="\\)" end=")" contained
 
 " comments last overriding everything else
-syn match   puppetComment            "\s*#.*$" contains=puppetTodo,@Spell
-syn region  puppetMultilineComment  start="/\*" end="\*/" contains=puppetTodo,@Spell
-syn keyword puppetTodo               TODO NOTE FIXME XXX BUG HACK contained
-syn keyword puppetTodo               TODO: NOTE: FIXME: XXX: BUG: HACK: contained
+syn match    puppetComment           "\s*#.*$" contains=puppetTodo,@Spell
+syn region   puppetMultilineComment  start="/\*" end="\*/" contains=puppetTodo,@Spell
+syn keyword  puppetTodo              TODO NOTE FIXME XXX BUG HACK contained
+syn keyword  puppetTodo              TODO: NOTE: FIXME: XXX: BUG: HACK: contained
+
+
+
+" Relationship
+syn match   puppetRelationship       "\(\~>\|->\|<\~\|<-\)"
+syn sync    fromstart
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
@@ -128,6 +125,7 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   HiLink puppetComment              Comment
   HiLink puppetMultilineComment     Comment
   HiLink puppetString               String
+  HiLink puppetRelationship         Keyword
   HiLink puppetRegex                Constant
   HiLink puppetRegexParen           Delimiter
   HiLink puppetRegexBrace           Delimiter
@@ -139,11 +137,14 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   HiLink puppetRegexSpecChar        SpecialChar
   HiLink puppetRegexComment         Comment
   HiLink puppetParamKeyword         Keyword
-  HiLink puppetParamDigits          String
-  HiLink puppetNotVariable          String
-  HiLink puppetParamSpecial         Boolean
+  HiLink puppetParamDigits          Constant
+  HiLink puppetBoolean              Boolean
+  HiLink puppetOperator             Special
   HiLink puppetSpecial              Special
   HiLink puppetTodo                 Todo
+  HiLink puppetBraces               Delimiter
+  HiLink puppetParens               Delimiter
+  HiLink puppetColon                Delimiter
   HiLink puppetBrack                Delimiter
   HiLink puppetTypeBrack            Delimiter
   HiLink puppetBrace                Delimiter
@@ -151,15 +152,23 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   HiLink puppetParen                Delimiter
   HiLink puppetDelimiter            Delimiter
   HiLink puppetControl              Statement
-  HiLink puppetDefType              Define
+  HiLink puppetDefType              Statement
+  HiLink puppetDefine               Define
+  HiLink puppetDataTypes            Define
   HiLink puppetDefName              Type
   HiLink puppetNodeRe               Type
   HiLink puppetTypeName             Statement
   HiLink puppetTypeDefault          Type
   HiLink puppetParamName            Identifier
   HiLink puppetArgument             Identifier
-  HiLink puppetFunction             Function
-  HiLink puppetClass                Include
+  HiLink puppetInstance             Define
+  HiLink puppetResType              Define
+  HiLink puppetArgFunction          Function
+  HiLink puppetClassInherit         Type
+  HiLink puppetFunctionName         Type
+  HiLink puppetDefineName           Define
+  HiLink puppetResource             Define
+  HiLink puppetNodeContent          Special
 
   delcommand HiLink
 endif
