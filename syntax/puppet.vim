@@ -123,7 +123,7 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   endif
 
   HiLink puppetVariable             Identifier
-  HiLink puppetType                 Define
+  HiLink puppetType                 Type
   HiLink puppetKeyword              Keyword
   HiLink puppetComment              Comment
   HiLink puppetMultilineComment     Comment
