@@ -32,9 +32,9 @@ syn match   puppetNodeRe        "/.*/" contained
 " match 'foo::bar' in 'class foo::bar { ...'
 " match 'Foo::Bar' in 'Foo::Bar["..."]
 "FIXME: "Foo-bar" doesn't get highlighted as expected, although "foo-bar" does.
-syn match   puppetInstance      "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)*\s*{" contains=puppetTypeName,puppetTypeDefault,@NoSpell
-syn match   puppetInstance      "[A-Z][a-z_-]\+\(::[A-Z][a-z_-]\+\)*\s*[[{]" contains=puppetTypeName,puppetTypeDefault,@NoSpell
-syn match   puppetInstance      "[A-Z][a-z_-]\+\(::[A-Z][a-z_-]\+\)*\s*<\?<|" contains=puppetTypeName,puppetTypeDefault,@NoSpell
+syn match   puppetInstance      "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)*\s*" contains=puppetTypeName,puppetTypeDefault,@NoSpell
+syn match   puppetInstance      "[A-Z][a-z_-]\+\(::[A-Z][a-z_-]\+\)*\s*[{]" contains=puppetTypeName,puppetTypeDefault,@NoSpell
+syn match   puppetInstance      "[A-Z][a-z_-]\+\(::[A-Z][a-z_-]\+\)*\s*" contains=puppetTypeName,puppetTypeDefault,@NoSpell
 syn match   puppetTypeName      "[a-z]\w*" contained
 syn match   puppetTypeDefault   "[A-Z]\w*" contained
 
@@ -60,8 +60,6 @@ syn keyword puppetParamKeyword  present absent purged latest installed running s
 syn keyword puppetParamSpecial  true false undef contained
 syn match   puppetParamDigits   "[0-9]\+"
 
-" match 'template' in 'content => template("...")'
-syn match   puppetParam         "\w\+\s*[=+]>\s*\w\+\s*(" contains=puppetFunction,puppetParamName
 " statements
 syn region  puppetFunction      start="^\s*\(alert\|crit\|debug\|emerg\|err\|fail\|include\|info\|notice\|realize\|require\|search\|tag\|warning\)\s*(" end=")" contained contains=puppetString
 " rvalues
