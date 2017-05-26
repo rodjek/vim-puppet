@@ -10,6 +10,7 @@ Provides
   * Syntax highlighting compatible with puppet 4.x
   * Automatic => alignment
     * If you don't like that, add `let g:puppet_align_hashes = 0` to your vimrc.
+  * Ctags support
   * Doesn't require a bloated JRE
   * Doesn't take minutes to open
 
@@ -22,6 +23,7 @@ Additional useful plugins
    snippets for multiple languages, including Puppet. Works with both
    [snipmate](https://github.com/garbas/vim-snipmate) and
    [ultisnips](https://github.com/SirVer/ultisnips).
+ * [Tagbar](https://github.com/majutsushi/tagbar) plugin for Ctags support.
 
 Installation
 ------------
