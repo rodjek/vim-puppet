@@ -3,5 +3,5 @@ if !exists('g:puppet_align_hashes')
 endif
 
 if g:puppet_align_hashes
-    inoremap <buffer> <silent> > ><Esc>:call puppet#align#AlignHashrockets()<CR>$a
+    inoremap <buffer> <silent> => =><Esc>:call puppet#align#AlignHashrockets()<CR>$a
 endif
