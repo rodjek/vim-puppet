@@ -24,7 +24,7 @@ syn match   puppetArgument      "\w\+" contained
 syn match   puppetArgument      "\$\w\+" contained
 syn match   puppetArgument      "'[^']+'" contained
 syn match   puppetArgument      '"[^"]+"' contained
-syn keyword puppetType          String Integer Float Numeric Boolean Array Hash Regexpf Undef Default
+syn keyword puppetType          Any Array Boolean Callable Catalogentry Collection Data Default Enum Float Hash Integer Numeric Optional Pattern Regexp Scalar String Struct Tuple Type Undef Variant
 syn match   puppetDefName       "\w\+" contained
 syn match   puppetNodeRe        "/.*/" contained
 
