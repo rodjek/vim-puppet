@@ -80,8 +80,8 @@ syn match   puppetNotVariable   "\\$\w\+" contained
 syn match   puppetNotVariable   "\\${\w\+}" contained
 
 " match keywords and control words except when used as a parameter
-syn match   puppetKeyword       "\(import\|inherits\|include\|require\|contain\)\(\s*=>\)\@!"
-syn match   puppetControl       "\(case\|default\|if\|else\|elsif\)\(\s*=>\)\@!"
+syn match   puppetKeyword       "\(\<import\>\|\<inherits\>\|\<include\>\|\<require\>\|\<contain\>\)\(\s*=>\)\@!"
+syn match   puppetControl       "\(\<case\>\|\<default\>\|\<if\>\|\<else\>\|\<elsif\>\)\(\s*=>\)\@!"
 syn keyword puppetSpecial       true false undef
 
 syn match   puppetClass         "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)\+" contains=@NoSpell
