@@ -3,7 +3,7 @@
     --regex-puppet=/^[[:space:]]*node[[:space:]]*[\'|\"]*([a-zA-Z0-9_\.\-]+)[\'|\"]*/\1/n,node/{scope=set}
     --regex-puppet=/^[[:space:]]*class[[:space:]]*([a-z][a-zA-Z0-9_:\-]+)[[:space:]]*\{*/\1/c,class,classes/{scope=set}
     --regex-puppet=/^[[:space:]]*define[[:space:]]*([a-z][a-zA-Z0-9_:\-]+)/\1/d,definition/{scope=set}
-    --regex-puppet=/^[[:space:]]*(include|require)[[:space:]]*([a-zA-Z0-9_:]+)/'\2'/i,include,includes/{scope=ref}
+    --regex-puppet=/^[[:space:]]*(include|require)[[:space:]]*([a-zA-Z0-9_:]+)/\1 \2/i,include,includes/{scope=ref}
     --regex-puppet=/^[[:space:]]*[~|\-]?>?[[:space:]]*([a-z][a-zA-Z0-9_:]+)[[:space:]]*\{[[:space:]]*(.*):/\1[\2]/r,resource/{scope=ref}
     --regex-puppet=/^[[:space:]]*([\$][a-zA-Z0-9_:]+)[[:space:]]*=/\1/v,variable/{scope=ref}
     --regex-puppet=/([A-Z][a-zA-Z0-9_:]+)[[:space:]]*\{/\1/f,default/
