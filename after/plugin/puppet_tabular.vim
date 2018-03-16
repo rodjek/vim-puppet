@@ -1,8 +1,11 @@
 if !exists('g:puppet_align_classes')
     let g:puppet_align_classes = 1
 endif
+if !exists('g:puppet_align_hashes')
+    let g:puppet_align_hashes = 1
+endif
 
-if exists(':AddTabularPipeline') && g:puppet_align_classes
+if exists(':AddTabularPipeline')
     " The function for an aligning each block of selectors separately
     function! AlignSelectorsByBlock(lines)
         let i = 0
@@ -49,9 +52,13 @@ if exists(':AddTabularPipeline') && g:puppet_align_classes
         let selectors = map(copy(a:lines), 'v:val =~ "=>" ? v:val : ""')
         " List of noise, haven't '$' or '=>'
         let noise = map(copy(a:lines), '(v:val !~ "[$]" && v:val !~ "=>") ? v:val : ""')
-        call AlignSelectorsByBlock(selectors)
+        if g:puppet_align_hashes
+            call AlignSelectorsByBlock(selectors)
+        endif
         " Splitting by first '$attribute' and '='
-        call tabular#TabularizeStrings(attributes, '^[^$]*\zs\s\+\$\w\+\>\|=', 'l0l1')
+        if g:puppet_align_classes
+            call tabular#TabularizeStrings(attributes, '^[^$]*\zs\s\+\$\w\+\>\|=', 'l0l1')
+        endif
         call map(a:lines, 'remove(attributes, 0) . remove(noise, 0) . remove(selectors, 0)')
     endfunction
 
@@ -59,8 +66,5 @@ if exists(':AddTabularPipeline') && g:puppet_align_classes
     " or whatever else, so tabular will search for any of `${['",#` symbols and
     " pass them into AlignPuppetClass function
     au FileType puppet AddTabularPipeline! puppet_class /[$}['",#]/ AlignPuppetClass(a:lines)
-    au FileType puppet inoremap <buffer> <silent> ,<CR> ,<Esc>:Tabularize puppet_class<CR>o
-    " A comma should be at the last position in the line that's why 'norm A'
-    " is enough in this case
-    au FileType puppet inoremap <buffer> <silent> ,, ,<Esc>:Tabularize puppet_class<CR>A
+    au FileType puppet inoremap <buffer> <silent> <CR> <Esc>:Tabularize puppet_class<CR>o
 endif
