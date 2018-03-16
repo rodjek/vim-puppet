@@ -16,7 +16,8 @@ let g:tagbar_type_puppet = {
     \ 'i:Includes',
     \ 'd:Definitions',
     \ 'r:Resources',
-    \ 'f:Defaults'
+    \ 'f:Defaults',
+    \ 't:Types',
   \],
 \}
 
