@@ -57,7 +57,7 @@ if exists(':AddTabularPipeline')
         endif
         " Splitting by first '$attribute' and '='
         if g:puppet_align_classes
-            call tabular#TabularizeStrings(attributes, '\v^[^$]*\zs\s+\$\w+(\>|,?)|\=', 'l0l1')
+            call tabular#TabularizeStrings(attributes, '\v^[^$]*\zs\s*\$\w+(>|,?)|\=', 'l1l0r1')
         endif
         call map(a:lines, 'remove(attributes, 0) . remove(noise, 0) . remove(selectors, 0)')
     endfunction
