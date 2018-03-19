@@ -46,12 +46,14 @@ if exists(':AddTabularPipeline')
     " payload and join again. Source for this taken from
     " https://unix.stackexchange.com/questions/35787/indent-the-middle-of-multiple-lines
     function! AlignPuppetClass(lines)
-        " List of payload, must contain '$' AND not contain '=>'
-        let attributes = map(copy(a:lines), '(v:val =~ "[$]" && v:val !~ "=>") ? v:val : ""')
-        " List of selectors, each block will be aligned separately
-        let selectors = map(copy(a:lines), 'v:val =~ "=>" ? v:val : ""')
-        " List of noise, haven't '$' or '=>'
-        let noise = map(copy(a:lines), '(v:val !~ "[$]" && v:val !~ "=>") ? v:val : ""')
+        " List of payload, must contain '$' AND not contain '=>', ignore
+        " comments lines
+        let attributes = map(copy(a:lines), '(v:val =~ "[$]" && v:val !~ "=>" && v:val !~ "^\s*#") ? v:val : ""')
+        " List of selectors, each block will be aligned separately, ignore
+        " comments lines
+        let selectors = map(copy(a:lines), '(v:val =~ "=>" && v:val !~ "^\s*#")? v:val : ""')
+        " List of noise, haven't '$' or '=>'. Also comments
+        let noise = map(copy(a:lines), '(v:val !~ "[$]" && v:val !~ "=>" || v:val =~ "^\s*#") ? v:val : ""')
         if g:puppet_align_hashes
             call AlignSelectorsByBlock(selectors)
         endif
