@@ -13,7 +13,7 @@ Provides
   * Syntax highlighting compatible with puppet 4.x
   * Automatic '=>' alignment
     * If you don't like that, add `let g:puppet_align_hashes = 0` to your vimrc.
-  * Automatic '=' alignment in class definition ([tabular](https://github.com/godlygeek/tabular) is required)
+  * Aligning '=' in class definition by pressing `<C-a>` ([tabular](https://github.com/godlygeek/tabular) is required)
     * If you don't like that, add `let g:puppet_align_classes = 0` to your vimrc.
   * Ctags support
   * Doesn't require a bloated JRE

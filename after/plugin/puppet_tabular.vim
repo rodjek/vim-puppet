@@ -5,7 +5,7 @@ if !exists('g:puppet_align_hashes')
     let g:puppet_align_hashes = 1
 endif
 
-if exists(':AddTabularPipeline')
+if exists(':AddTabularPipeline') && g:puppet_align_classes
     " The function for an aligning each block of selectors separately
     function! AlignSelectorsByBlock(lines)
         let i = 0
@@ -48,25 +48,23 @@ if exists(':AddTabularPipeline')
     function! AlignPuppetClass(lines)
         " List of payload, must contain '$' AND not contain '=>', ignore
         " comments lines
-        let attributes = map(copy(a:lines), '(v:val =~ "[$]" && v:val !~ "=>" && v:val !~ "^\s*#") ? v:val : ""')
+        let attributes = map(copy(a:lines), '(v:val =~ "[$]" && v:val !~ "=>" && v:val !~ ''^\s*#'') ? v:val : ""')
         " List of selectors, each block will be aligned separately, ignore
         " comments lines
-        let selectors = map(copy(a:lines), '(v:val =~ "=>" && v:val !~ "^\s*#")? v:val : ""')
+        let selectors = map(copy(a:lines), '(v:val =~ "=>" && v:val !~ ''^\s*#'') ? v:val : ""')
         " List of noise, haven't '$' or '=>'. Also comments
-        let noise = map(copy(a:lines), '(v:val !~ "[$]" && v:val !~ "=>" || v:val =~ "^\s*#") ? v:val : ""')
+        let noise = map(copy(a:lines), '(v:val !~ "[$]" && v:val !~ "=>" || v:val =~ ''^\s*#'') ? v:val : ""')
         if g:puppet_align_hashes
             call AlignSelectorsByBlock(selectors)
         endif
         " Splitting by first '$attribute' and '='
-        if g:puppet_align_classes
-            call tabular#TabularizeStrings(attributes, '\v^[^$]*\zs\s*\$\w+(>|,?)|\=', 'l1l0r1')
-        endif
+        call tabular#TabularizeStrings(attributes, '\v^[^$]*\zs(\s+\$\w+(>|,?))|(\=)', 'l0l0r1r1')
         call map(a:lines, 'remove(attributes, 0) . remove(noise, 0) . remove(selectors, 0)')
     endfunction
 
     " The class definition could be interrupted with enum's multiline, selectors
-    " or whatever else, so tabular will search for any of `${['",#` symbols and
-    " pass them into AlignPuppetClass function
-    au FileType puppet AddTabularPipeline! puppet_class /[$}['",#]/ AlignPuppetClass(a:lines)
-    au FileType puppet inoremap <buffer> <silent> <CR> <Esc>:Tabularize puppet_class<CR>o
+    " or whatever else, so tabular will search for any of `[$['",#]` symbols and
+    " pass them into AlignPuppetClass function.
+    au FileType puppet AddTabularPipeline! puppet_class /[$['",#]/ AlignPuppetClass(a:lines)
+    au FileType puppet inoremap <buffer> <silent> <C-a> <Esc>:Tabularize puppet_class<CR>A
 endif
