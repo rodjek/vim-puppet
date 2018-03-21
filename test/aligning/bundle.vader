@@ -1,0 +1,137 @@
+Given puppet (Sample class):
+  class some::example (
+      # It's not possible to allign class without leading spaces/tabs. Sad but true
+      $the_most_longest_argument,
+      String $arg2,
+      $arg3=4,
+      $rsa_private_key = undef,
+      Type::Server::Hostname $hostname =$::hostname,
+      Type::Inet $intern_ip= $::intern_ip,
+      Optional[Type::Inet6] $primary_ip6 = defined('$::primary_ip6') ? {
+          true=>$::primary_ip6,
+          false=> undef,
+      },
+      # comment with => and $var inside
+      # comment with only =>
+      # comment with only $argument
+      Type::Server::Hostname $project = $::project,
+      Enum[
+          'online',
+          'offline',
+          'WIP'
+      ] $state= $::state,
+      String[1] $environment = $::environment,
+      Optional[String[1]] $function = $::function,
+      Type::Server::Hostname $monitoring_queue = $::monitoring_queue,
+      Array[Pattern[/\A[a-z][a-z0-9_-]*\Z/]] $monitoring_checks =$::monitoring_checks,
+      Optional[Type::Server::Hostname] $project_network= defined('$::project_network') ? {
+          true => $::project_network,
+          false =>undef,
+          default=>'',
+      },
+  ) {
+      file { '/just_example':
+          ensure=>'directory',
+          require=>Package['example'],
+      }
+  }
+
+Execute (Tabularize class and resource):
+  2 Tabularize puppet_class
+  33 Tabularize puppet_class
+
+Expect (Aligning works fine):
+  class some::example (
+      # It's not possible to allign class without leading spaces/tabs. Sad but true
+                                             $the_most_longest_argument,
+      String                                 $arg2,
+                                             $arg3                       = 4,
+                                             $rsa_private_key            = undef,
+      Type::Server::Hostname                 $hostname                   = $::hostname,
+      Type::Inet                             $intern_ip                  = $::intern_ip,
+      Optional[Type::Inet6]                  $primary_ip6                = defined('$::primary_ip6') ? {
+          true  => $::primary_ip6,
+          false => undef,
+      },
+      # comment with => and $var inside
+      # comment with only =>
+      # comment with only $argument
+      Type::Server::Hostname                 $project                    = $::project,
+      Enum[
+          'online',
+          'offline',
+          'WIP'
+      ]                                      $state                      = $::state,
+      String[1]                              $environment                = $::environment,
+      Optional[String[1]]                    $function                   = $::function,
+      Type::Server::Hostname                 $monitoring_queue           = $::monitoring_queue,
+      Array[Pattern[/\A[a-z][a-z0-9_-]*\Z/]] $monitoring_checks          = $::monitoring_checks,
+      Optional[Type::Server::Hostname]       $project_network            = defined('$::project_network') ? {
+          true    => $::project_network,
+          false   => undef,
+          default => '',
+      },
+  ) {
+      file { '/just_example':
+          ensure  => 'directory',
+          require => Package['example'],
+      }
+  }
+
+Given puppet (Resource brakes by Tabularize):
+      # Another useful case
+      # Breaks by <C-a>, works with => autoalignment
+      if $rsa_private_key != undef {
+          some::cool::helper { $user:
+              home_dir=> '/home/user',
+              authorized_keys =>[
+                  convert_ssh_rsa_private_to_public_key($rsa_private_key)
+              ],
+              rsa_private_key =>$rsa_private_key,
+          }
+      }
+
+Execute (Tabularize in 4th line):
+  4 Tabularize puppet_class
+
+Expect (Unhappily, the aligning here is broken):
+      # Another useful case
+      # Breaks by <C-a>, works with => autoalignment
+      if                                                                  $rsa_private_key! = undef {
+          some::cool::helper {                                            $user           :
+              home_dir        => '/home/user',
+              authorized_keys => [
+                  convert_ssh_rsa_private_to_public_key($rsa_private_key)
+              ],
+              rsa_private_key => $rsa_private_key,
+          }
+      }
+
+Given puppet (Resource brakes by Tabularize):
+      # Another useful case
+      # Breaks by <C-a>, works with => autoalignment
+      if $rsa_private_key != undef {
+          some::cool::helper { $user:
+              home_dir=> '/home/user',
+              authorized_keys =>[
+                  convert_ssh_rsa_private_to_public_key($rsa_private_key)
+              ],
+              rsa_private_key =>$rsa_private_key,
+          }
+      }
+
+Do (Apply '=>' aligning):
+  4jf=2s=>
+
+Expect (Aligning with '=>' works):
+      # Another useful case
+      # Breaks by <C-a>, works with => autoalignment
+      if $rsa_private_key != undef {
+          some::cool::helper { $user:
+              home_dir        => '/home/user',
+              authorized_keys => [
+                  convert_ssh_rsa_private_to_public_key($rsa_private_key)
+              ],
+              rsa_private_key => $rsa_private_key,
+          }
+      }
