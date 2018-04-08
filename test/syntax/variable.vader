@@ -1,0 +1,25 @@
+Given puppet (local variables):
+  $foo
+  $f
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,2), 'puppetVariable'
+  AssertEqual SyntaxAt(2,2), 'puppetVariable'
+-------------------------------------------------------------------------------
+Given puppet (global scope variables):
+  $::foo
+  $::f
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,2), 'puppetVariable'
+  AssertEqual SyntaxAt(2,2), 'puppetVariable'
+-------------------------------------------------------------------------------
+Given puppet (out of scope qualified name variables):
+  $foo::boo::moo
+  $::foo::boo::moo
+  $::f00_::b_OO
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,2), 'puppetVariable'
+  AssertEqual SyntaxAt(2,2), 'puppetVariable'
+  AssertEqual SyntaxAt(3,2), 'puppetVariable'
