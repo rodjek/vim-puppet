@@ -1,0 +1,23 @@
+language: vim
+
+matrix:
+  include:
+    # travis build-in vim version, 7.x
+    - env: TESTVIM=vim
+    # nightly build neovim version
+    - env: TESTVIM=nvim
+
+install:
+  - |
+    set -e
+    pushd /tmp
+    if [ "$TESTVIM" = nvim ]; then
+      eval "$(curl -Ss https://raw.githubusercontent.com/neovim/bot-ci/master/scripts/travis-setup.sh) nightly-x64"
+      gem install neovim
+      pip install --user neovim
+    fi
+    popd
+
+script:
+  - test/run-tests.sh
+
