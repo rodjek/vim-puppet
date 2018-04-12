@@ -1,6 +1,9 @@
 vim-puppet
 ==========
 
+[![Build
+Status](https://secure.travis-ci.org/rodjek/vim-puppet.png)](http://travis-ci.org/rodjek/vim-puppet)
+
 Make vim more Puppet friendly!
 
 Provides
