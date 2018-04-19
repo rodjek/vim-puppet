@@ -2,8 +2,10 @@
 #
 # Download dependencies for tests and run full test suit
 # Can use TESTVIM env variable to choose between vim and nvim (neovim)
+# Optional first script argument can be path to vader file (run only one suite)
 #
 set -x
+TEST_FILE=$1
 SCRIPT_FOLDER=$(dirname "$(readlink -f "$0")")
 
 # TESTVIM env variable has precedence over installed programs
@@ -27,7 +29,13 @@ if [ ! -d "vader.vim" ]; then
   git clone https://github.com/junegunn/vader.vim.git
 fi
 
-"${RUNVIM}" -u test/init.vim -c 'Vader! test/**/*.vader' > /dev/null
+if [ -z $TEST_FILE ]; then
+  TEST_SUITE='test/**/*.vader'
+else
+  TEST_SUITE=$TEST_FILE
+fi
+
+"${RUNVIM}" -u test/init.vim -c "Vader! ${TEST_SUITE}" > /dev/null
 vader_exit=$?
 [ -n "${VADER_OUTPUT_FILE}" ] && cat "${VADER_OUTPUT_FILE}"
 exit $vader_exit
