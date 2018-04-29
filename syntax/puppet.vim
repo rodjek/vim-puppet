@@ -10,14 +10,14 @@
 " Copied from the cfengine, ruby, and perl syntax files
 " For version 5.x: Clear all syntax items
 " For version 6.x: Quit when a syntax file was already loaded
-if version < 600
+if v:version < 600
   syntax clear
-elseif exists("b:current_syntax")
+elseif exists('b:current_syntax')
   finish
 endif
 
 " match class/definition/node declarations
-syn region  puppetDefine        start="^\s*\(class\|define\|node\)\s" end="{" contains=puppetDefType,puppetDefName,puppetDefArguments,puppetNodeRe,@NoSpell
+syn region  puppetDefine        start="^\s*\(class\|define\|node\)\s" end="{\@=" contains=puppetDefType,puppetDefName,puppetDefArguments,puppetNodeRe,@NoSpell
 syn keyword puppetDefType       class define node inherits contained
 syn region  puppetDefArguments  start="(" end=")" contained contains=puppetType,puppetArgument,puppetString,puppetComment,puppetMultilineComment
 syn match   puppetArgument      "\w\+" contained
@@ -32,9 +32,9 @@ syn match   puppetNodeRe        "/.*/" contained
 " match 'foo::bar' in 'class foo::bar { ...'
 " match 'Foo::Bar' in 'Foo::Bar["..."]
 "FIXME: "Foo-bar" doesn't get highlighted as expected, although "foo-bar" does.
-syn match   puppetInstance      "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)*\s*{" contains=puppetTypeName,puppetTypeDefault,@NoSpell
-syn match   puppetInstance      "[A-Z][a-z_-]\+\(::[A-Z][a-z_-]\+\)*\s*[[{]" contains=puppetTypeName,puppetTypeDefault,@NoSpell
-syn match   puppetInstance      "[A-Z][a-z_-]\+\(::[A-Z][a-z_-]\+\)*\s*<\?<|" contains=puppetTypeName,puppetTypeDefault,@NoSpell
+syn match   puppetInstance      "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)*\s*{" contains=puppetTypeName,puppetTypeDefault,puppetBlock,@NoSpell
+syn match   puppetInstance      "[A-Z][a-z_-]\+\(::[A-Z][a-z_-]\+\)*\s*[[{]" contains=puppetTypeName,puppetTypeDefault,puppetBlock,@NoSpell
+syn match   puppetInstance      "[A-Z][a-z_-]\+\(::[A-Z][a-z_-]\+\)*\s*<\?<|" contains=puppetTypeName,puppetTypeDefault,puppetBlock,@NoSpell
 syn match   puppetTypeName      "[a-z]\w*" contained
 syn match   puppetTypeDefault   "[A-Z]\w*" contained
 
@@ -44,8 +44,6 @@ syn match   puppetParamName       "\w\+" contained contains=@NoSpell
 syn match   puppetVariable           "$\(\(\(::\)\?\w\+\)\+\|{\(\(::\)\?\w\+\)\+}\)"
 syn match   puppetParen           "("
 syn match   puppetParen           ")"
-syn match   puppetBrace           "{"
-syn match   puppetBrace           "}"
 syn match   puppetBrack           "\["
 syn match   puppetBrack           "\]"
 syn match   puppetBrack           "<|"
@@ -96,8 +94,6 @@ syn region  puppetRegex            start="/" skip="\\/" end="/" contains=puppetR
 syn match   puppetRegexParen       "(\(?\([imx]\{0,4}:\|[=!]\)\)\?" contains=puppetRegexSpecChar,puppetRegexSubName contained
 "syn match   puppetRegexParen       "(\(?\([imxo]\{0,4}:\|['<][[:alnum:]]\+[>']\|<?[=!]\)\)\?" contains=puppetRegexSpecChar,puppetRegexSubName contained
 syn match   puppetRegexParen       ")" contained
-syn match   puppetRegexBrace       "{" contained
-syn match   puppetRegexBrace       "}" contained
 syn match   puppetRegexBrack       "\[" contained
 syn match   puppetRegexBrack       "\]" contained
 "syn match   puppetRegexAngBrack    "<" contained
@@ -113,13 +109,15 @@ syn match   puppetComment            "\s*#.*$" contains=puppetTodo,@Spell
 syn region  puppetMultilineComment  start="/\*" end="\*/" contains=puppetTodo,@Spell
 syn keyword puppetTodo               TODO NOTE FIXME XXX BUG HACK contained
 syn keyword puppetTodo               TODO: NOTE: FIXME: XXX: BUG: HACK: contained
+syn region  puppetBlock              start="{" end="}" contains=ALL
+syn match   puppetSpecialChar        "\v([,:])" contained
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
 " For version 5.8 and later: only when an item doesn't have highlighting yet
-if version >= 508 || !exists("did_puppet_syn_inits")
-  if version < 508
-    let did_puppet_syn_inits = 1
+if v:version >= 508 || !exists('g:did_puppet_syn_inits')
+  if v:version < 508
+    let g:did_puppet_syn_inits = 1
     command -nargs=+ HiLink hi link <args>
   else
     command -nargs=+ HiLink hi def link <args>
@@ -133,12 +131,12 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   HiLink puppetString               String
   HiLink puppetRegex                Constant
   HiLink puppetRegexParen           Delimiter
-  HiLink puppetRegexBrace           Delimiter
   HiLink puppetRegexBrack           Delimiter
   HiLink puppetRegexAngBrack        Delimiter
   HiLink puppetRegexTick            Delimiter
   HiLink puppetRegexOr              Delimiter
   HiLink puppetRegexSubName         Identifier
+  HiLink puppetSpecialChar          Normal
   HiLink puppetRegexSpecChar        SpecialChar
   HiLink puppetRegexComment         Comment
   HiLink puppetParamKeyword         Keyword
@@ -148,8 +146,7 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   HiLink puppetSpecial              Special
   HiLink puppetTodo                 Todo
   HiLink puppetBrack                Delimiter
-  HiLink puppetTypeBrack            Delimiter
-  HiLink puppetBrace                Delimiter
+  HiLink puppetBlock                Delimiter
   HiLink puppetTypeBrace            Delimiter
   HiLink puppetParen                Delimiter
   HiLink puppetDelimiter            Delimiter
@@ -167,4 +164,4 @@ if version >= 508 || !exists("did_puppet_syn_inits")
   delcommand HiLink
 endif
 
-let b:current_syntax = "puppet"
+let b:current_syntax = 'puppet'

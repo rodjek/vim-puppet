@@ -1,0 +1,36 @@
+Given puppet (class definition):
+  class foo {
+    notify { 'test': }
+  }
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1, 11), 'puppetBlock'
+  AssertEqual SyntaxAt(2,10), 'puppetBlock'
+  AssertNotEqual SyntaxAt(2,13), 'puppetBlock'
+  AssertEqual SyntaxAt(2,20), 'puppetBlock'
+  AssertEqual SyntaxAt(3,1), 'puppetBlock'
+-------------------------------------------------------------------------------
+Given puppet (resource intance):
+  file { 'foo':
+    ensure => file,
+  }
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,6), 'puppetBlock'
+  AssertNotEqual SyntaxAt(2,6), 'puppetBlock'
+  AssertEqual SyntaxAt(3,1), 'puppetBlock'
+" -------------------------------------------------------------------------------
+Given puppet (class instance with more ):
+  foo::bar { 'foo':
+    ensure  => present,
+    exclude => ['one', 'two', 'three'],
+  }
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,10), 'puppetBlock'
+" FIXME: Now square bracket in this place is puppetRegexBrack
+" square bracelets should be same as block
+  " AssertEqual SyntaxAt(3,36), 'puppetBlock'
+" commas should be ingored
+  AssertNotEqual SyntaxAt(3,37), 'puppetBlock'
+  AssertEqual SyntaxAt(4,1), 'puppetBlock'
