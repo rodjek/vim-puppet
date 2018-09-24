@@ -12,6 +12,7 @@ let b:did_indent = 1
 setlocal autoindent smartindent
 setlocal indentexpr=GetPuppetIndent()
 setlocal indentkeys+=0],0)
+setlocal formatexpr=puppet#format#Format()
 
 if exists("*GetPuppetIndent")
     finish
@@ -41,13 +42,20 @@ function! s:OpenBrace(lnum)
     return searchpair('{\|\[\|(', '', '}\|\]\|)', 'nbW')
 endfunction
 
-function! GetPuppetIndent()
-    let pnum = prevnonblank(v:lnum - 1)
+""
+" Get indent number for line, line can be given as params, otherwise function
+" use line where cursor is
+" @param a:1 (optional) line number in current buffer
+" @return integer
+function! GetPuppetIndent(...)
+    let l:lnum = get(a:, 1, v:lnum)
+
+    let pnum = prevnonblank(l:lnum - 1)
     if pnum == 0
        return 0
     endif
 
-    let line = getline(v:lnum)
+    let line = getline(l:lnum)
     let pline = getline(pnum)
     let ind = indent(pnum)
 
@@ -76,7 +84,6 @@ function! GetPuppetIndent()
     if line =~ '^\s*}\s*els\(e\|if\).*{\s*$'
         let ind -= &sw
     endif
-    
     " Don't indent resources that are one after another with a ->(ordering arrow)
     " file {'somefile':
     "    ...

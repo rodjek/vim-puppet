@@ -41,10 +41,15 @@ function! puppet#align#LinesInBlock(lnum)
     return lines
 endfunction
 
-function! puppet#align#AlignHashrockets()
-    let lines_in_block = puppet#align#LinesInBlock(line('.'))
+""
+" Format lines with hashrocket (=>)
+" @param a:1 a line where function should search for first hashrocket
+"   expression, if param is not given, line with active cursor is used
+function! puppet#align#AlignHashrockets(...) abort
+    let l:lnum = get(a:, 1, line('.'))
+    let lines_in_block = puppet#align#LinesInBlock(l:lnum)
     let max_left_len = 0
-    let indent_str = printf('%' . indent(line('.')) . 's', '')
+    let indent_str = printf('%' . indent(l:lnum) . 's', '')
 
     for line_num in lines_in_block
         let data = matchlist(getline(line_num), '^\s*\(.\{-}\S\)\s*=>\s*\(.*\)$')

@@ -1,0 +1,32 @@
+Given puppet (simple resource with autoformat while writing):
+  file { 'foo':
+    ensure => present,
+  }
+
+Do (format resource):
+  joforce=>true,
+
+Expect (formated resource):
+  file { 'foo':
+    ensure => present,
+    force  => true,
+  }
+-------------------------------------------------------------------------------
+Given puppet (simple resource with gq):
+    # Long comment 123456789 123456789 123456789 123456789 123456789 123456789 123456789
+  file { 'foo':
+  ensure => present,
+      force      =>     true,
+  }
+
+Do (format resource):
+  gqG
+
+Expect (formated resource):
+  # Long comment 123456789 123456789 123456789 123456789 123456789 123456789
+  # 123456789
+  file { 'foo':
+    ensure => present,
+    force  => true,
+  }
+

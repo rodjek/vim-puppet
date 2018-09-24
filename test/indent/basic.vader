@@ -1,0 +1,50 @@
+Given puppet (class with includes):
+  class foo::boo {
+      include foo::moo
+    include foo::moo::boo
+      }
+
+Do (full text indent with '='):
+  gg=G
+
+Expect puppet (indented class):
+  class foo::boo {
+    include foo::moo
+    include foo::moo::boo
+  }
+-------------------------------------------------------------------------------
+Given puppet (class with includes):
+  class foo::boo {
+      include foo::moo
+    include foo::moo::boo
+      }
+
+Do (full text indent with 'gq' in Visual Mode):
+  VGgq
+
+Expect puppet (indented class):
+  class foo::boo {
+    include foo::moo
+    include foo::moo::boo
+  }
+-------------------------------------------------------------------------------
+Given puppet (class with includes and resources):
+  class foo::boo {
+  file { 'boo':
+  ensure => present,
+  }
+  include foo::moo
+  include foo::moo::boo
+  }
+
+Do (full text indent by gq with motion):
+  jgqi{
+
+Expect puppet (indented class):
+  class foo::boo {
+    file { 'boo':
+      ensure => present,
+    }
+    include foo::moo
+    include foo::moo::boo
+  }
