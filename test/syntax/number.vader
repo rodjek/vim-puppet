@@ -1,0 +1,140 @@
+Given puppet (hexidecimal):
+  0xff
+  0xabcdef0123456789
+  0x0
+  0x123ABC
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'puppetInteger'
+  AssertEqual SyntaxAt(1,2), 'puppetInteger'
+  AssertEqual SyntaxAt(1,3), 'puppetInteger'
+  AssertEqual SyntaxAt(1,4), 'puppetInteger'
+
+  AssertEqual SyntaxAt(2,1), 'puppetInteger'
+  AssertEqual SyntaxAt(2,2), 'puppetInteger'
+  AssertEqual SyntaxAt(2,3), 'puppetInteger'
+  AssertEqual SyntaxAt(2,4), 'puppetInteger'
+  AssertEqual SyntaxAt(2,5), 'puppetInteger'
+  AssertEqual SyntaxAt(2,6), 'puppetInteger'
+  AssertEqual SyntaxAt(2,7), 'puppetInteger'
+  AssertEqual SyntaxAt(2,8), 'puppetInteger'
+  AssertEqual SyntaxAt(2,9), 'puppetInteger'
+  AssertEqual SyntaxAt(2,10), 'puppetInteger'
+  AssertEqual SyntaxAt(2,11), 'puppetInteger'
+  AssertEqual SyntaxAt(2,12), 'puppetInteger'
+  AssertEqual SyntaxAt(2,13), 'puppetInteger'
+  AssertEqual SyntaxAt(2,14), 'puppetInteger'
+  AssertEqual SyntaxAt(2,15), 'puppetInteger'
+  AssertEqual SyntaxAt(2,16), 'puppetInteger'
+  AssertEqual SyntaxAt(2,17), 'puppetInteger'
+  AssertEqual SyntaxAt(2,18), 'puppetInteger'
+
+  AssertEqual SyntaxAt(3,1), 'puppetInteger'
+  AssertEqual SyntaxAt(3,2), 'puppetInteger'
+  AssertEqual SyntaxAt(3,3), 'puppetInteger'
+
+  AssertEqual SyntaxAt(4,1), 'puppetInteger'
+  AssertEqual SyntaxAt(4,2), 'puppetInteger'
+  AssertEqual SyntaxAt(4,3), 'puppetInteger'
+  AssertEqual SyntaxAt(4,4), 'puppetInteger'
+  AssertEqual SyntaxAt(4,5), 'puppetInteger'
+  AssertEqual SyntaxAt(4,6), 'puppetInteger'
+  AssertEqual SyntaxAt(4,7), 'puppetInteger'
+  AssertEqual SyntaxAt(4,8), 'puppetInteger'
+
+-------------------------------------------------------------------------------
+
+Given puppet (integer):
+  10
+  0
+  -9
+  10000
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'puppetInteger'
+  AssertEqual SyntaxAt(1,2), 'puppetInteger'
+
+  AssertEqual SyntaxAt(2,1), 'puppetInteger'
+
+  " TODO: Negative sign is currently preventing the following numbers from
+  " being recognised.
+  AssertEqual SyntaxAt(3,1), 'puppetOperator'
+  "AssertEqual SyntaxAt(3,2), 'puppetInteger'
+
+  AssertEqual SyntaxAt(4,1), 'puppetInteger'
+  AssertEqual SyntaxAt(4,2), 'puppetInteger'
+  AssertEqual SyntaxAt(4,3), 'puppetInteger'
+  AssertEqual SyntaxAt(4,4), 'puppetInteger'
+  AssertEqual SyntaxAt(4,5), 'puppetInteger'
+
+-------------------------------------------------------------------------------
+
+Given puppet (octal):
+  077
+  01234567
+  00
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'puppetInteger'
+  AssertEqual SyntaxAt(1,2), 'puppetInteger'
+  AssertEqual SyntaxAt(1,3), 'puppetInteger'
+
+  AssertEqual SyntaxAt(2,1), 'puppetInteger'
+  AssertEqual SyntaxAt(2,2), 'puppetInteger'
+  AssertEqual SyntaxAt(2,3), 'puppetInteger'
+  AssertEqual SyntaxAt(2,4), 'puppetInteger'
+  AssertEqual SyntaxAt(2,5), 'puppetInteger'
+  AssertEqual SyntaxAt(2,6), 'puppetInteger'
+  AssertEqual SyntaxAt(2,7), 'puppetInteger'
+  AssertEqual SyntaxAt(2,8), 'puppetInteger'
+
+  AssertEqual SyntaxAt(3,1), 'puppetInteger'
+  AssertEqual SyntaxAt(3,2), 'puppetInteger'
+
+-------------------------------------------------------------------------------
+
+Given puppet (floating point):
+  +1.0e2
+  -1.0e-2
+  1.0
+  1.0e0
+  5.2E3
+  3e5
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'puppetOperator'
+  AssertEqual SyntaxAt(1,2), 'puppetFloat'
+  AssertEqual SyntaxAt(1,3), 'puppetFloat'
+  AssertEqual SyntaxAt(1,4), 'puppetFloat'
+  AssertEqual SyntaxAt(1,5), 'puppetFloat'
+  AssertEqual SyntaxAt(1,6), 'puppetFloat'
+
+  " TODO: Negative sign is currently preventing the following numbers from
+  " being recognised.
+  AssertEqual SyntaxAt(2,1), 'puppetOperator'
+  "AssertEqual SyntaxAt(2,2), 'puppetFloat'
+  "AssertEqual SyntaxAt(2,3), 'puppetFloat'
+  "AssertEqual SyntaxAt(2,4), 'puppetFloat'
+  "AssertEqual SyntaxAt(2,5), 'puppetFloat'
+  "AssertEqual SyntaxAt(2,6), 'puppetFloat'
+  "AssertEqual SyntaxAt(2,7), 'puppetFloat'
+
+  AssertEqual SyntaxAt(3,1), 'puppetFloat'
+  AssertEqual SyntaxAt(3,2), 'puppetFloat'
+  AssertEqual SyntaxAt(3,3), 'puppetFloat'
+
+  AssertEqual SyntaxAt(4,1), 'puppetFloat'
+  AssertEqual SyntaxAt(4,2), 'puppetFloat'
+  AssertEqual SyntaxAt(4,3), 'puppetFloat'
+  AssertEqual SyntaxAt(4,4), 'puppetFloat'
+  AssertEqual SyntaxAt(4,5), 'puppetFloat'
+
+  AssertEqual SyntaxAt(5,1), 'puppetFloat'
+  AssertEqual SyntaxAt(5,2), 'puppetFloat'
+  AssertEqual SyntaxAt(5,3), 'puppetFloat'
+  AssertEqual SyntaxAt(5,4), 'puppetFloat'
+  AssertEqual SyntaxAt(5,5), 'puppetFloat'
+
+  AssertEqual SyntaxAt(6,1), 'puppetFloat'
+  AssertEqual SyntaxAt(6,2), 'puppetFloat'
+  AssertEqual SyntaxAt(6,3), 'puppetFloat'
