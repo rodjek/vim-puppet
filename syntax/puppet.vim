@@ -38,7 +38,7 @@ syn match puppetStringEscape "\%(\\M-\\C-\|\\C-\\M-\|\\M-\\c\|\\c\\M-\|\\c\|\\C-
 syn match puppetQuoteEscape  "\\[\\']" contained display
 
 syn region puppetInterpolation   matchgroup=puppetInterpolationDelimiter start="${" end="}" contained contains=ALLBUT,@puppetNotTop
-syn match  puppetInterpolation   "$\w\+"                        display contained contains=puppetInterpolationDelimiter,puppetVariable
+syn match  puppetInterpolation   "$\%(::\)\?\w\+"                        display contained contains=puppetInterpolationDelimiter,puppetVariable
 syn match  puppetInterpolationDelimiter "$\ze\$\w\+"            display contained
 syn match  puppetInterpolation   "$\$\%(-\w\|\W\)"              display contained contains=puppetInterpolationDelimiter,puppetVariable,puppetInvalidVariable
 syn match  puppetInterpolationDelimiter "$\ze\$\%(-\w\|\W\)"    display contained

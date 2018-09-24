@@ -1,10 +1,23 @@
-Given puppet (top scope variable):
+Given puppet (interpolated top scope variable):
   $foo = "foo${::bar}baz"
 
 Execute (syntax is good):
-  AssertEqual SyntaxAt(1,8), 'puppetString'
-  AssertEqual SyntaxAt(1,12), 'puppetVariable'
+  AssertEqual SyntaxAt(1,8), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,9), 'puppetString'
+  AssertEqual SyntaxAt(1,10), 'puppetString'
+  AssertEqual SyntaxAt(1,11), 'puppetString'
+  AssertEqual SyntaxAt(1,12), 'puppetInterpolationDelimiter'
+  AssertEqual SyntaxAt(1,13), 'puppetInterpolationDelimiter'
+  AssertEqual SyntaxAt(1,14), 'puppetName'
+  AssertEqual SyntaxAt(1,15), 'puppetName'
+  AssertEqual SyntaxAt(1,16), 'puppetName'
+  AssertEqual SyntaxAt(1,17), 'puppetName'
+  AssertEqual SyntaxAt(1,18), 'puppetName'
+  AssertEqual SyntaxAt(1,19), 'puppetInterpolationDelimiter'
   AssertEqual SyntaxAt(1,20), 'puppetString'
+  AssertEqual SyntaxAt(1,21), 'puppetString'
+  AssertEqual SyntaxAt(1,22), 'puppetString'
+  AssertEqual SyntaxAt(1,23), 'puppetStringDelimiter'
 
 -------------------------------------------------------------------------------
 
@@ -12,9 +25,20 @@ Given puppet (local variable):
   $foo = "foo${bar}baz"
 
 Execute (syntax is good):
-  AssertEqual SyntaxAt(1,8), 'puppetString'
-  AssertEqual SyntaxAt(1,12), 'puppetVariable'
+  AssertEqual SyntaxAt(1,8), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,9), 'puppetString'
+  AssertEqual SyntaxAt(1,10), 'puppetString'
+  AssertEqual SyntaxAt(1,11), 'puppetString'
+  AssertEqual SyntaxAt(1,12), 'puppetInterpolationDelimiter'
+  AssertEqual SyntaxAt(1,13), 'puppetInterpolationDelimiter'
+  AssertEqual SyntaxAt(1,14), 'puppetName'
+  AssertEqual SyntaxAt(1,15), 'puppetName'
+  AssertEqual SyntaxAt(1,16), 'puppetName'
+  AssertEqual SyntaxAt(1,17), 'puppetInterpolationDelimiter'
   AssertEqual SyntaxAt(1,18), 'puppetString'
+  AssertEqual SyntaxAt(1,19), 'puppetString'
+  AssertEqual SyntaxAt(1,20), 'puppetString'
+  AssertEqual SyntaxAt(1,21), 'puppetStringDelimiter'
 
 -------------------------------------------------------------------------------
 
@@ -22,9 +46,19 @@ Given puppet (unenclosed local variable):
   $foo = "foo$bar baz"
 
 Execute (syntax is good):
-  AssertEqual SyntaxAt(1,8), 'puppetString'
+  AssertEqual SyntaxAt(1,8), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,9), 'puppetString'
+  AssertEqual SyntaxAt(1,10), 'puppetString'
+  AssertEqual SyntaxAt(1,11), 'puppetString'
   AssertEqual SyntaxAt(1,12), 'puppetVariable'
+  AssertEqual SyntaxAt(1,13), 'puppetVariable'
+  AssertEqual SyntaxAt(1,14), 'puppetVariable'
+  AssertEqual SyntaxAt(1,15), 'puppetVariable'
   AssertEqual SyntaxAt(1,16), 'puppetString'
+  AssertEqual SyntaxAt(1,17), 'puppetString'
+  AssertEqual SyntaxAt(1,18), 'puppetString'
+  AssertEqual SyntaxAt(1,19), 'puppetString'
+  AssertEqual SyntaxAt(1,20), 'puppetStringDelimiter'
 
 -------------------------------------------------------------------------------
 
@@ -32,6 +66,18 @@ Given puppet (unenclosed top scope variable):
   $foo = "foo$::bar-baz"
 
 Execute (syntax is good):
-  AssertEqual SyntaxAt(1,8), 'puppetString'
+  AssertEqual SyntaxAt(1,8), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,9), 'puppetString'
+  AssertEqual SyntaxAt(1,10), 'puppetString'
+  AssertEqual SyntaxAt(1,11), 'puppetString'
   AssertEqual SyntaxAt(1,12), 'puppetVariable'
+  AssertEqual SyntaxAt(1,13), 'puppetVariable'
+  AssertEqual SyntaxAt(1,14), 'puppetVariable'
+  AssertEqual SyntaxAt(1,15), 'puppetVariable'
+  AssertEqual SyntaxAt(1,16), 'puppetVariable'
+  AssertEqual SyntaxAt(1,17), 'puppetVariable'
   AssertEqual SyntaxAt(1,18), 'puppetString'
+  AssertEqual SyntaxAt(1,19), 'puppetString'
+  AssertEqual SyntaxAt(1,20), 'puppetString'
+  AssertEqual SyntaxAt(1,21), 'puppetString'
+  AssertEqual SyntaxAt(1,22), 'puppetStringDelimiter'
