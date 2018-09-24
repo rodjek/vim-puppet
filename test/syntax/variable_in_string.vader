@@ -1,0 +1,37 @@
+Given puppet (top scope variable):
+  $foo = "foo${::bar}baz"
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,8), 'puppetString'
+  AssertEqual SyntaxAt(1,12), 'puppetVariable'
+  AssertEqual SyntaxAt(1,20), 'puppetString'
+
+-------------------------------------------------------------------------------
+
+Given puppet (local variable):
+  $foo = "foo${bar}baz"
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,8), 'puppetString'
+  AssertEqual SyntaxAt(1,12), 'puppetVariable'
+  AssertEqual SyntaxAt(1,18), 'puppetString'
+
+-------------------------------------------------------------------------------
+
+Given puppet (unenclosed local variable):
+  $foo = "foo$bar baz"
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,8), 'puppetString'
+  AssertEqual SyntaxAt(1,12), 'puppetVariable'
+  AssertEqual SyntaxAt(1,16), 'puppetString'
+
+-------------------------------------------------------------------------------
+
+Given puppet (unenclosed top scope variable):
+  $foo = "foo$::bar-baz"
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,8), 'puppetString'
+  AssertEqual SyntaxAt(1,12), 'puppetVariable'
+  AssertEqual SyntaxAt(1,18), 'puppetString'
