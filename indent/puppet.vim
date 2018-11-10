@@ -68,6 +68,12 @@ function! GetPuppetIndent(...)
         return ind
     endif
 
+    " We are inside a multi-line string: if we interfere with indentation here
+    " we're actually changing the contents of of the string!
+    if synIDattr(synID(l:lnum, 1, 0), 'name') =~? 'string'
+        return indent(l:lnum)
+    endif
+
     if pline =~ '\({\|\[\|(\|:\)\s*\(#.*\)\?$'
         let ind += &sw
     elseif pline =~ ';$' && pline !~ '[^:]\+:.*[=+]>.*'
