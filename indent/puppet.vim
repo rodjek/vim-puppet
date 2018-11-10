@@ -39,7 +39,8 @@ endfunction
 
 function! s:OpenBrace(lnum)
     call cursor(a:lnum, 1)
-    return searchpair('{\|\[\|(', '', '}\|\]\|)', 'nbW')
+    return searchpair('{\|\[\|(', '', '}\|\]\|)', 'nbW',
+      \ 'synIDattr(synID(line("."), col("."), 0), "name") =~? "comment\\|string"')
 endfunction
 
 ""
