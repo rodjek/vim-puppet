@@ -30,7 +30,7 @@ function! s:PartOfInclude(lnum)
         if line !~ ',$'
             break
         endif
-        if line =~ '^\s*include\s\+[^,]\+,$'
+        if line =~ '^\s*include\s\+[^,]\+,$' && line !~ '[=>]>'
             return 1
         endif
     endwhile
