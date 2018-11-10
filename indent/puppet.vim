@@ -43,6 +43,19 @@ function! s:OpenBrace(lnum)
       \ 'synIDattr(synID(line("."), col("."), 0), "name") =~? "comment\\|string"')
 endfunction
 
+function! s:InsideMultilineString(lnum)
+    return synIDattr(synID(a:lnum, 1, 0), 'name') =~? 'string'
+endfunction
+
+function! s:PrevNonMultilineString(lnum)
+    let l:lnum = a:lnum
+    while l:lnum > 0 && s:InsideMultilineString(lnum)
+        let l:lnum = l:lnum - 1
+    endwhile
+
+    return l:lnum
+endfunction
+
 ""
 " Get indent number for line, line can be given as params, otherwise function
 " use line where cursor is
@@ -70,8 +83,19 @@ function! GetPuppetIndent(...)
 
     " We are inside a multi-line string: if we interfere with indentation here
     " we're actually changing the contents of of the string!
-    if synIDattr(synID(l:lnum, 1, 0), 'name') =~? 'string'
+    if s:InsideMultilineString(l:lnum)
         return indent(l:lnum)
+    endif
+
+    " Previous line was inside a multi-line string: we've lost the indent
+    " level. We need to find this value from the last line that was not inside
+    " of a multi-line string to restore proper alignment.
+    if s:InsideMultilineString(pnum)
+        if pnum - 1 == 0
+            return ind
+        endif
+
+        let ind = indent(s:PrevNonMultilineString(pnum - 1))
     endif
 
     if pline =~ '\({\|\[\|(\|:\)\s*\(#.*\)\?$'
