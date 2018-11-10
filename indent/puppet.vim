@@ -59,7 +59,11 @@ function! GetPuppetIndent(...)
     let pline = getline(pnum)
     let ind = indent(pnum)
 
-    if pline =~ '^\s*#'
+    " Avoid cases of closing braces or parens on the current line: returning
+    " the same indent here would be premature since for that particular case
+    " we want to instead get the indent level of the matching opening brace or
+    " parenthenses.
+    if pline =~ '^\s*#' && line !~ '^\s*\(}\(,\|;\)\?$\|]:\|],\|}]\|];\?$\|)\)'
         return ind
     endif
 
