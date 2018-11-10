@@ -67,7 +67,7 @@ function! GetPuppetIndent(...)
         let ind += &sw
     elseif pline =~ ';$' && pline !~ '[^:]\+:.*[=+]>.*'
         let ind -= &sw
-    elseif pline =~ '^\s*include\s\+.*,$'
+    elseif pline =~ '^\s*include\s\+.*,$' && pline !~ '[=+]>'
         let ind += &sw
     endif
 
