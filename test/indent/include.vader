@@ -1,0 +1,55 @@
+" We want includes that bring in more than one classes and that span multiple
+" lines to be indented until we have the last resource name without a trailing
+" comma.
+Given puppet (include of multiple classes over multiple lines):
+  include foo::moo,
+  foo::moo::boo,
+        foo::baa
+
+Do (full text indent with '='):
+  gg=G
+
+Expect puppet (indented include):
+  include foo::moo,
+    foo::moo::boo,
+    foo::baa
+-------------------------------------------------------------------------------
+" This indentation of includes must not affect resource parameters that are
+" named include.
+Given puppet (resource with param named include):
+  some::resouce { 'namehere':
+    include => ['s1', 's2'],
+  otherparam => 'value',
+
+Do (full text indent with '='):
+  gg=G
+
+Expect puppet (properly aligned parameters):
+  some::resouce { 'namehere':
+    include => ['s1', 's2'],
+    otherparam => 'value',
+-------------------------------------------------------------------------------
+" This case is similar to the one above but would trigger only when the line
+" just above the current line (the line affected here would be
+" "following::resource ...") was something that didn't end with a trailing
+" comma. This would trigger evaluation of PartOfInclude and would end up
+" finding the parameter named include which would lead to an indentation error
+" for following::resource.
+Given puppet (resource with param named include contained in class):
+  class module::blah {
+    some::resouce { 'namehere':
+      include => ['s1', 's2'],
+      otherparam => 'value',
+    }
+      following::resource { 'identifier':
+
+Do (full text indent with '='):
+  gg=G
+
+Expect puppet (second contained resource should align with the first one):
+  class module::blah {
+    some::resouce { 'namehere':
+      include => ['s1', 's2'],
+      otherparam => 'value',
+    }
+    following::resource { 'identifier':
