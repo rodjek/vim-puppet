@@ -1,0 +1,54 @@
+Given puppet (comments before closing brace):
+  node pizzabox.example.com {
+    include some::resource
+    # This comment is very important
+    }
+
+Do (full text indent with '='):
+  gg=G
+
+Expect puppet (closing brace back aligned with start of resource block):
+  node pizzabox.example.com {
+    include some::resource
+    # This comment is very important
+  }
+-------------------------------------------------------------------------------
+Given puppet (closing brace after comment that contains closing brace):
+  class something {
+    #}
+      }
+
+Do (full text indent with '='):
+  gg=G
+
+Expect puppet (closing brace back aligned with start of resource block):
+  class something {
+    #}
+  }
+-------------------------------------------------------------------------------
+" XXX: This test doesn't do what we're expecting: it seems as though indentation
+" doesn't have access to syntax classes during tests.
+Given puppet (multi-line string):
+  class something {
+    $var="
+  This text on new line
+   should not move
+  "
+        this::defined_type { 'foo':
+  content => $var,
+  }
+      }
+
+Do (full text indent with '='):
+  gg=G
+
+Expect puppet (multi-line string does not move and line after resumes indentation):
+  class something {
+    $var="
+  This text on new line
+   should not move
+  "
+    this::defined_type { 'foo':
+      content => $var,
+    }
+  }
