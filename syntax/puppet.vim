@@ -38,9 +38,9 @@ syn match   puppetInstance      "[A-Z][a-z_-]\+\(::[A-Z][a-z_-]\+\)*\s*<\?<|" co
 syn match   puppetTypeName      "[a-z]\w*" contained
 syn match   puppetTypeDefault   "[A-Z]\w*" contained
 
-syn match   puppetParam           "\w\+\s*\(=\|+\)>" contains=puppetTypeRArrow,puppetParamName
+syn match   puppetParam           "\(\w\+\|\*\)\s*\(=\|+\)>" contains=puppetTypeRArrow,puppetParamName
 syn match   puppetParamRArrow       "\(=\|+\)>" contained
-syn match   puppetParamName       "\w\+" contained contains=@NoSpell
+syn match   puppetParamName       "\(\w\+\|\*\)" contained contains=@NoSpell
 syn match   puppetVariable           "$\(\(\(::\)\?\w\+\)\+\|{\(\(::\)\?\w\+\)\+}\)"
 syn match   puppetParen           "("
 syn match   puppetParen           ")"
