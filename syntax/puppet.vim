@@ -92,7 +92,7 @@ syn match   puppetClass         "[A-Za-z0-9_-]\+\(::[A-Za-z0-9_-]\+\)\+" contain
 " sub-expressions.  Matches for these features are included in the
 " commented-out versions of puppetRegexParen and puppetRegexSubName,
 " plus the supporting groups puppetRegexAngBrack and puppetRegexTick.
-syn region  puppetRegex            start="/" skip="\\/" end="/" contains=puppetRegexParen,puppetRegexBrace,puppetRegexOrpuppetRegexBrack,puppetRegexComment
+syn region  puppetRegex            start="\(?<!/.*\)/" skip="\\/" end="/" contains=puppetRegexParen,puppetRegexBrace,puppetRegexOrpuppetRegexBrack,puppetRegexComment
 syn match   puppetRegexParen       "(\(?\([imx]\{0,4}:\|[=!]\)\)\?" contains=puppetRegexSpecChar,puppetRegexSubName contained
 "syn match   puppetRegexParen       "(\(?\([imxo]\{0,4}:\|['<][[:alnum:]]\+[>']\|<?[=!]\)\)\?" contains=puppetRegexSpecChar,puppetRegexSubName contained
 syn match   puppetRegexParen       ")" contained
