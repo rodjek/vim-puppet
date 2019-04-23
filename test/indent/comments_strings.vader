@@ -1,0 +1,54 @@
+Given puppet (comments before closing brace):
+  node pizzabox.example.com {
+    include some::resource
+    # This comment is very important
+    }
+
+Do (full text indent with '='):
+  gg=G
+
+Expect puppet (closing brace back aligned with start of resource block):
+  node pizzabox.example.com {
+    include some::resource
+    # This comment is very important
+  }
+-------------------------------------------------------------------------------
+Given puppet (closing brace after comment that contains closing brace):
+  class something {
+    #}
+      }
+
+Do (full text indent with '='):
+  gg=G
+
+Expect puppet (closing brace back aligned with start of resource block):
+  class something {
+    #}
+  }
+-------------------------------------------------------------------------------
+Given puppet (multi-line string):
+  class something {
+    $var="
+  This text on new line
+   should not move
+  "
+        this::defined_type { 'foo':
+  content => $var,
+  }
+      }
+
+" XXX Redraw the screen to ensure that syntax highlighting has run
+Do (full text indent with '='):
+  \<C-o>:redraw | normal! gs\<cr>
+  gg=G
+
+Expect puppet (multi-line string does not move and line after resumes indentation):
+  class something {
+    $var="
+  This text on new line
+   should not move
+  "
+    this::defined_type { 'foo':
+      content => $var,
+    }
+  }

@@ -30,7 +30,7 @@ function! s:PartOfInclude(lnum)
         if line !~ ',$'
             break
         endif
-        if line =~ '^\s*include\s\+[^,]\+,$'
+        if line =~ '^\s*include\s\+[^,]\+,$' && line !~ '[=>]>'
             return 1
         endif
     endwhile
@@ -39,7 +39,21 @@ endfunction
 
 function! s:OpenBrace(lnum)
     call cursor(a:lnum, 1)
-    return searchpair('{\|\[\|(', '', '}\|\]\|)', 'nbW')
+    return searchpair('{\|\[\|(', '', '}\|\]\|)', 'nbW',
+      \ 'synIDattr(synID(line("."), col("."), 0), "name") =~? "comment\\|string"')
+endfunction
+
+function! s:InsideMultilineString(lnum)
+    return synIDattr(synID(a:lnum, 1, 0), 'name') =~? 'string'
+endfunction
+
+function! s:PrevNonMultilineString(lnum)
+    let l:lnum = a:lnum
+    while l:lnum > 0 && s:InsideMultilineString(lnum)
+        let l:lnum = l:lnum - 1
+    endwhile
+
+    return l:lnum
 endfunction
 
 ""
@@ -59,15 +73,36 @@ function! GetPuppetIndent(...)
     let pline = getline(pnum)
     let ind = indent(pnum)
 
-    if pline =~ '^\s*#'
+    " Avoid cases of closing braces or parens on the current line: returning
+    " the same indent here would be premature since for that particular case
+    " we want to instead get the indent level of the matching opening brace or
+    " parenthenses.
+    if pline =~ '^\s*#' && line !~ '^\s*\(}\(,\|;\)\?$\|]:\|],\|}]\|];\?$\|)\)'
         return ind
+    endif
+
+    " We are inside a multi-line string: if we interfere with indentation here
+    " we're actually changing the contents of of the string!
+    if s:InsideMultilineString(l:lnum)
+        return indent(l:lnum)
+    endif
+
+    " Previous line was inside a multi-line string: we've lost the indent
+    " level. We need to find this value from the last line that was not inside
+    " of a multi-line string to restore proper alignment.
+    if s:InsideMultilineString(pnum)
+        if pnum - 1 == 0
+            return ind
+        endif
+
+        let ind = indent(s:PrevNonMultilineString(pnum - 1))
     endif
 
     if pline =~ '\({\|\[\|(\|:\)\s*\(#.*\)\?$'
         let ind += &sw
     elseif pline =~ ';$' && pline !~ '[^:]\+:.*[=+]>.*'
         let ind -= &sw
-    elseif pline =~ '^\s*include\s\+.*,$'
+    elseif pline =~ '^\s*include\s\+.*,$' && pline !~ '[=+]>'
         let ind += &sw
     endif
 
