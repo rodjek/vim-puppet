@@ -5,6 +5,7 @@ if !exists(':Tagbar')
     finish
 endif
 
+let s:ctags_version = system('ctags --version')
 let g:tagbar_type_puppet = {
   \ 'ctagstype': 'puppet',
   \ 'kinds': [
@@ -21,7 +22,7 @@ let g:tagbar_type_puppet = {
   \],
 \}
 
-if puppet#ctags#Type() == 'universal'
+if s:ctags_version =~ 'Universal Ctags'
     " There no sense to split objects by colon
     let g:tagbar_type_puppet.sro = '__'
     let g:tagbar_type_puppet.kind2scope = {
@@ -38,7 +39,7 @@ if puppet#ctags#Type() == 'universal'
       \ 'include'    : 'i',
       \ 'variable'   : 'v',
     \}
+    let g:tagbar_type_puppet.deffile = expand('<sfile>:p:h:h') . '/ctags/puppet_u.ctags'
+elseif s:ctags_version =~ 'Exuberant Ctags'
+    let g:tagbar_type_puppet.deffile = expand('<sfile>:p:h:h') . '/ctags/puppet.ctags'
 endif
-
-let g:tagbar_type_puppet.deffile = puppet#ctags#OptionFile()
-
