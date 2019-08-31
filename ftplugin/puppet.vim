@@ -9,10 +9,18 @@ if (exists("b:did_ftplugin"))
 endif
 let b:did_ftplugin = 1
 
-setl ts=2
-setl sts=2
-setl sw=2
-setl et
-setl keywordprg=puppet\ describe\ --providers
-setl iskeyword=-,:,@,48-57,_,192-255
-setl cms=#\ %s
+setlocal tabstop=2
+setlocal softtabstop=2
+setlocal shiftwidth=2
+setlocal expandtab
+setlocal keywordprg=puppet\ describe\ --providers
+setlocal iskeyword=-,:,@,48-57,_,192-255
+setlocal commentstring=#\ %s
+
+setlocal formatexpr=puppet#format#Format()
+
+let b:undo_ftplugin = "
+    \ setlocal tabstop< tabstop< softtabstop< shiftwidth< expandtab<
+    \| setlocal keywordprg< iskeyword< commentstring<
+    \| setlocal formatexpr<
+    \"
