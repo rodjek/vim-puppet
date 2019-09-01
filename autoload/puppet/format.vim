@@ -3,8 +3,13 @@
 function! puppet#format#Format() abort
   let l:start_lnum = v:lnum
   let l:end_lnum = v:lnum + v:count - 1
-  call puppet#format#Indention(l:start_lnum, l:end_lnum)
-  call puppet#format#Hashrocket(l:start_lnum, l:end_lnum)
+  " Don't modify indentation or alignment if called by textwidth. We'll only
+  " let the fallback function do its thing in this case so that textwidth
+  " still performs the expected feature.
+  if mode() !~# '[iR]'
+    call puppet#format#Indention(l:start_lnum, l:end_lnum)
+    call puppet#format#Hashrocket(l:start_lnum, l:end_lnum)
+  endif
   call puppet#format#Fallback(l:start_lnum, l:end_lnum)
 endfunction
 
