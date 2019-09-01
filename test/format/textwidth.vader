@@ -1,3 +1,5 @@
+# First let's test that formatting without textwidth set doesn't do unexpected things
+
 Given puppet (long line):
   # Long comment 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789
   file { 'foo':
@@ -13,12 +15,18 @@ Expect puppet (nothing changed):
     ensure => present,
   }
 
+-------------------------------------------------------------------------------
+# Now let's check that the plugin does the right thing when textwidth is set.
+#
+# All of the tests below this point expect to have 'textwidth' set during the test.
 Before (set textwidth):
   set textwidth=76
 
 After (unset textwidth):
   set textwidth=0
 
+-------------------------------------------------------------------------------
+# note: using the same fixture as before
 Do (format all text with textwidth set):
   gqG
 
@@ -28,5 +36,21 @@ Expect puppet (comment is wrapped into more lines):
   # 123456789
   file { 'foo':
     ensure => present,
+  }
+
+-------------------------------------------------------------------------------
+Given puppet (long line before editing):
+  file { 'foo':
+    ensure => present,
+    source => ['puppet:///modules/very_long_module_name_that_will_not_stop'],
+  }
+
+Do (type in some more on long line):
+  jjA mode
+
+Expect puppet (formatting did not change line):
+  file { 'foo':
+    ensure => present,
+    source => ['puppet:///modules/very_long_module_name_that_will_not_stop'], mode
   }
 
