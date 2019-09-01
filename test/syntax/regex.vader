@@ -1,0 +1,12 @@
+Given puppet (division operation):
+  $x = $y / 1
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,6), 'puppetVariable'
+  AssertEqual SyntaxAt(1,7), 'puppetVariable'
+  AssertEqual SyntaxAt(1,8), ''
+  AssertEqual SyntaxAt(1,9), 'puppetOperator'
+  AssertEqual SyntaxAt(1,10), ''
+  AssertEqual SyntaxAt(1,11), 'puppetInteger'
+
+-------------------------------------------------------------------------------
