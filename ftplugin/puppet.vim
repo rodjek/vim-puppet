@@ -18,10 +18,11 @@ setlocal iskeyword=:,@,48-57,_,192-255
 setlocal comments=sr:/*,mb:*,ex:*/,b:#
 setlocal commentstring=#\ %s
 
+setlocal formatoptions-=t formatoptions+=croql
 setlocal formatexpr=puppet#format#Format()
 
 let b:undo_ftplugin = "
     \ setlocal tabstop< tabstop< softtabstop< shiftwidth< expandtab<
     \| setlocal keywordprg< iskeyword< comments< commentstring<
-    \| setlocal formatexpr<
+    \| setlocal formatoptions< formatexpr<
     \"
