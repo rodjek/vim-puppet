@@ -1,0 +1,32 @@
+Given puppet (long line):
+  # Long comment 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789
+  file { 'foo':
+    ensure => present,
+  }
+
+Do (format all text):
+  gqG
+
+Expect puppet (nothing changed):
+  # Long comment 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789
+  file { 'foo':
+    ensure => present,
+  }
+
+Before (set textwidth):
+  set textwidth=76
+
+After (unset textwidth):
+  set textwidth=0
+
+Do (format all text with textwidth set):
+  gqG
+
+Expect puppet (comment is wrapped into more lines):
+  # Long comment 123456789 123456789 123456789 123456789 123456789 123456789
+  # 123456789 123456789 123456789 123456789 123456789 123456789 123456789
+  # 123456789
+  file { 'foo':
+    ensure => present,
+  }
+

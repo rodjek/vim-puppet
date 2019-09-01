@@ -13,7 +13,7 @@ Expect (formated resource):
   }
 -------------------------------------------------------------------------------
 Given puppet (simple resource with gq):
-    # Long comment 123456789 123456789 123456789 123456789 123456789 123456789 123456789
+    # Short comment
   file { 'foo':
   ensure => present,
       force      =>     true,
@@ -23,8 +23,7 @@ Do (format resource):
   gqG
 
 Expect (formated resource):
-  # Long comment 123456789 123456789 123456789 123456789 123456789 123456789
-  # 123456789
+  # Short comment
   file { 'foo':
     ensure => present,
     force  => true,

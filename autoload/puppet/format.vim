@@ -11,6 +11,8 @@ function! puppet#format#Format() abort
     call puppet#format#Hashrocket(l:start_lnum, l:end_lnum)
   endif
   call puppet#format#Fallback(l:start_lnum, l:end_lnum)
+  " explicitly avoid falling back to default formatting
+  return 0
 endfunction
 
 ""
@@ -40,10 +42,16 @@ endfunction
 " lines which exeed &widthline are formated
 "
 function! puppet#format#Fallback(start_lnum, end_lnum) abort
+  " We shouldn't wrap lines based on textwidth if it is disabled
+  if &textwidth == 0
+    return
+  endif
+
   " I'm using it to check if autoformat expand range
   let l:eof_lnum = line('$')
   let l:lnum = a:start_lnum
   let l:end_lnum = a:end_lnum
+
   while l:lnum <= l:end_lnum
     if strlen(getline(l:lnum)) > &textwidth
       call cursor(l:lnum)
