@@ -1,4 +1,4 @@
-" Vim filetype plugin
+" Vim syntax plugin
 " Language:             embedded puppet
 " Maintainer:           Gabriel Filion <gabster@lelutin.ca>
 " URL:                  https://github.com/rodjek/vim-puppet
