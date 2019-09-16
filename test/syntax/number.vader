@@ -56,10 +56,8 @@ Execute (syntax is good):
 
   AssertEqual SyntaxAt(2,1), 'puppetInteger'
 
-  " TODO: Negative sign is currently preventing the following numbers from
-  " being recognised.
-  AssertEqual SyntaxAt(3,1), 'puppetOperator'
-  "AssertEqual SyntaxAt(3,2), 'puppetInteger'
+  AssertEqual SyntaxAt(3,1), 'puppetInteger'
+  AssertEqual SyntaxAt(3,2), 'puppetInteger'
 
   AssertEqual SyntaxAt(4,1), 'puppetInteger'
   AssertEqual SyntaxAt(4,2), 'puppetInteger'
@@ -109,15 +107,13 @@ Execute (syntax is good):
   AssertEqual SyntaxAt(1,5), 'puppetFloat'
   AssertEqual SyntaxAt(1,6), 'puppetFloat'
 
-  " TODO: Negative sign is currently preventing the following numbers from
-  " being recognised.
-  AssertEqual SyntaxAt(2,1), 'puppetOperator'
-  "AssertEqual SyntaxAt(2,2), 'puppetFloat'
-  "AssertEqual SyntaxAt(2,3), 'puppetFloat'
-  "AssertEqual SyntaxAt(2,4), 'puppetFloat'
-  "AssertEqual SyntaxAt(2,5), 'puppetFloat'
-  "AssertEqual SyntaxAt(2,6), 'puppetFloat'
-  "AssertEqual SyntaxAt(2,7), 'puppetFloat'
+  AssertEqual SyntaxAt(2,1), 'puppetFloat'
+  AssertEqual SyntaxAt(2,2), 'puppetFloat'
+  AssertEqual SyntaxAt(2,3), 'puppetFloat'
+  AssertEqual SyntaxAt(2,4), 'puppetFloat'
+  AssertEqual SyntaxAt(2,5), 'puppetFloat'
+  AssertEqual SyntaxAt(2,6), 'puppetFloat'
+  AssertEqual SyntaxAt(2,7), 'puppetFloat'
 
   AssertEqual SyntaxAt(3,1), 'puppetFloat'
   AssertEqual SyntaxAt(3,2), 'puppetFloat'
