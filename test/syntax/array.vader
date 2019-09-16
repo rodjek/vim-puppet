@@ -1,0 +1,108 @@
+Given puppet (simple array):
+  [ 'one', 'two', 'three' ]
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'puppetDelimiter'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,2), 'puppetDelimiter'
+  AssertEqual SyntaxAt(1,3), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,4), 'puppetString'
+  AssertEqual SyntaxAt(1,5), 'puppetString'
+  AssertEqual SyntaxAt(1,6), 'puppetString'
+  AssertEqual SyntaxAt(1,7), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,8), 'puppetOperator'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,9), 'puppetBracketOperator'
+  AssertEqual SyntaxAt(1,10), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,11), 'puppetString'
+  AssertEqual SyntaxAt(1,12), 'puppetString'
+  AssertEqual SyntaxAt(1,13), 'puppetString'
+  AssertEqual SyntaxAt(1,14), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,15), 'puppetOperator'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,16), 'puppetBracketOperator'
+  AssertEqual SyntaxAt(1,17), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,18), 'puppetString'
+  AssertEqual SyntaxAt(1,19), 'puppetString'
+  AssertEqual SyntaxAt(1,20), 'puppetString'
+  AssertEqual SyntaxAt(1,21), 'puppetString'
+  AssertEqual SyntaxAt(1,22), 'puppetString'
+  AssertEqual SyntaxAt(1,23), 'puppetStringDelimiter'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,24), 'puppetDelimiter'
+  AssertEqual SyntaxAt(1,25), 'puppetDelimiter'
+
+-------------------------------------------------------------------------------
+
+Given puppet (empty array):
+  []
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'puppetDelimiter'
+  AssertEqual SyntaxAt(1,2), 'puppetDelimiter'
+
+-------------------------------------------------------------------------------
+
+Given puppet (nested array):
+  ['foo', [ 1,3] ]
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'puppetDelimiter'
+  AssertEqual SyntaxAt(1,2), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,3), 'puppetString'
+  AssertEqual SyntaxAt(1,4), 'puppetString'
+  AssertEqual SyntaxAt(1,5), 'puppetString'
+  AssertEqual SyntaxAt(1,6), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,7), 'puppetOperator'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,8), 'puppetBracketOperator'
+  AssertEqual SyntaxAt(1,9), 'puppetDelimiter'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,10), 'puppetDelimiter'
+  AssertEqual SyntaxAt(1,11), 'puppetInteger'
+  AssertEqual SyntaxAt(1,12), 'puppetOperator'
+  AssertEqual SyntaxAt(1,13), 'puppetInteger'
+  AssertEqual SyntaxAt(1,14), 'puppetDelimiter'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,15), 'puppetDelimiter'
+  AssertEqual SyntaxAt(1,16), 'puppetDelimiter'
+
+-------------------------------------------------------------------------------
+
+Given puppet (array with nested hash):
+  [1, 2, { 'foo' => 'bar' },]
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'puppetDelimiter'
+  AssertEqual SyntaxAt(1,2), 'puppetInteger'
+  AssertEqual SyntaxAt(1,3), 'puppetOperator'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,4), 'puppetBracketOperator'
+  AssertEqual SyntaxAt(1,5), 'puppetInteger'
+  AssertEqual SyntaxAt(1,6), 'puppetOperator'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,7), 'puppetBracketOperator'
+  AssertEqual SyntaxAt(1,8), 'puppetDelimiter'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,9), 'puppetDelimiter'
+  AssertEqual SyntaxAt(1,10), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,11), 'puppetString'
+  AssertEqual SyntaxAt(1,12), 'puppetString'
+  AssertEqual SyntaxAt(1,13), 'puppetString'
+  AssertEqual SyntaxAt(1,14), 'puppetStringDelimiter'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,15), 'puppetBraceOperator'
+  AssertEqual SyntaxAt(1,16), 'puppetOperator'
+  AssertEqual SyntaxAt(1,17), 'puppetOperator'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,18), 'puppetBraceOperator'
+  AssertEqual SyntaxAt(1,19), 'puppetStringDelimiter'
+  AssertEqual SyntaxAt(1,20), 'puppetString'
+  AssertEqual SyntaxAt(1,21), 'puppetString'
+  AssertEqual SyntaxAt(1,22), 'puppetString'
+  AssertEqual SyntaxAt(1,23), 'puppetStringDelimiter'
+  " TODO: Ideally this should link to a null syntax node.
+  "AssertEqual SyntaxAt(1,24), 'puppetDelimiter'
+  AssertEqual SyntaxAt(1,25), 'puppetDelimiter'
+  AssertEqual SyntaxAt(1,26), 'puppetOperator'
+  AssertEqual SyntaxAt(1,27), 'puppetDelimiter'
