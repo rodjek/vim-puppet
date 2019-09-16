@@ -1,0 +1,28 @@
+Given puppet (heredoc with trailing comma on first line):
+  class foo {
+  profile::notes { $title:
+    notes => @("NOTES"),
+      A note with an apostrophe in it's midst breaks
+      highlighting.
+      |-NOTES
+  }
+
+Execute (syntax is undisturbed by trailing comma or apostrophe):
+  AssertEqual SyntaxOf("apostrophe"), 'puppetString'
+  AssertEqual SyntaxOf("midst"), 'puppetString'
+  AssertNotEqual SyntaxOf("NOTES",2), 'puppetString'
+  AssertNotEqual SyntaxOf("}"), 'puppetString'
+-------------------------------------------------------------------------------
+Given puppet (heredoc with simple closing symbol):
+    $fix_maxpoll = @(END)
+  grep ^server $ntp_conf | grep -v 'maxpoll 10'| while read -r line; do
+  
+  END
+  
+    exec {
+
+Execute (closing symbol properly ends syntax group):
+  AssertEqual SyntaxOf("END"), 'puppetStringDelimiter'
+  AssertEqual SyntaxOf("grep"), 'puppetString'
+  AssertEqual SyntaxOf("END",2), 'puppetStringDelimiter'
+  AssertNotEqual SyntaxOf("exec"), 'puppetString'
