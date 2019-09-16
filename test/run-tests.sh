@@ -28,6 +28,10 @@ cd "${SCRIPT_FOLDER}/.."
 if [ ! -d "vader.vim" ]; then
   git clone https://github.com/junegunn/vader.vim.git
 fi
+if [ ! -d "tabular" ]; then
+  git clone https://github.com/godlygeek/tabular.git
+fi
+
 
 if [ -z $TEST_FILE ]; then
   TEST_SUITE='test/**/*.vader'
