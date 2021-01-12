@@ -20,6 +20,9 @@ Provides
 Additional useful plugins
 -------------------------
 
+ * [vim-yardoc](https://github.com/noprompt/vim-yardoc) Syntax coloration for
+     YARD tags and directives. It can also colorize the tags and directives in
+     puppet files.
  * [syntastic](https://github.com/scrooloose/syntastic) plugin for automatic
    syntax checking while in vim.
  * [vim-snippets](https://github.com/honza/vim-snippets) is a library of
