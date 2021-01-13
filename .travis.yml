@@ -12,9 +12,9 @@ install:
     set -e
     pushd /tmp
     if [ "$TESTVIM" = nvim ]; then
-      eval "$(curl -Ss https://raw.githubusercontent.com/neovim/bot-ci/master/scripts/travis-setup.sh) nightly-x64"
-      gem install neovim
-      pip install --user neovim
+      curl -LO https://github.com/neovim/neovim/releases/download/v0.4.4/nvim-linux64.tar.gz
+      tar xzf nvim-linux64.tar.gz
+      export PATH="${PATH}:node_modules/.bin:$(pwd)/nvim-linux64/bin"
     fi
     popd
 
