@@ -52,3 +52,14 @@ Expect puppet (multi-line string does not move and line after resumes indentatio
       content => $var,
     }
   }
+
+-------------------------------------------------------------------------------
+Given puppet (square bracket and hash sign):
+  $baz = '[#'
+
+Do (New line):
+  A\<CR>$qux
+
+Expect puppet (indent stays the same):
+  $baz = '[#'
+  $qux
