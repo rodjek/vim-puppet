@@ -6,9 +6,9 @@ Given (embeddedpuppet file with leading tag):
   <% if { %>
   content
 
-Execute (create file and clear filetype):
+Execute (trigger filetype detection):
   file test_with_leading_tag.epp
   filetype detect
 
-Then (Filetype detection with an opening epp tag at the start of the file):
+Then (should be detected as embeddedpuppet):
   AssertEqual &filetype, 'embeddedpuppet'
