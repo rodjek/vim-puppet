@@ -1,0 +1,25 @@
+Before:
+  setlocal foldmethod=syntax
+
+After:
+  setlocal foldmethod=manual
+
+Given puppet (basic class):
+  class foobar(
+    $a = true
+  ) {
+    $b = true
+    if $b {
+      $c = false
+    }
+  }
+
+Execute (fold level # in code block):
+  AssertEqual foldlevel(1), 1, 'class foobar('
+  AssertEqual foldlevel(2), 1, '  $a = true'
+  AssertEqual foldlevel(3), 1, ') {'
+  AssertEqual foldlevel(4), 1, '  $b = false'
+  AssertEqual foldlevel(5), 2, '  if $b {'
+  AssertEqual foldlevel(6), 2, '    $c = false'
+  AssertEqual foldlevel(7), 2, '  }'
+  AssertEqual foldlevel(8), 1, '}'
