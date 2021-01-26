@@ -1,3 +1,4 @@
+" vint: -ProhibitAutocmdWithNoGroup
 " Vim's own filetypes.vim runs before all ftdetect scripts (why?) and matches
 " detects the .pp extension as being a 'pascal' file. Since the script uses
 " `setf`, we can nullify the filetype detection by removing all commands bound
