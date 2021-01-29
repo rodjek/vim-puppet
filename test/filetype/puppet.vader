@@ -6,7 +6,7 @@ Given (simple puppet file):
 
 Execute (trigger filetype detection):
   file simple.pp
-  filetype detect
+  edit
 
 Then (Detected simple.pp as a puppet file):
   AssertEqual &filetype, 'puppet'

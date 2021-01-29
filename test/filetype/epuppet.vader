@@ -8,7 +8,7 @@ Given (epuppet file with leading tag):
 
 Execute (trigger filetype detection):
   file test_with_leading_tag.epp
-  filetype detect
+  edit
 
 Then (should be detected as epuppet):
   AssertEqual &filetype, 'epuppet'

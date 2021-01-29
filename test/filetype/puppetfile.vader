@@ -5,7 +5,7 @@ Given (simple Puppetfile):
 
 Execute (trigger filetype detection):
   file Puppetfile
-  filetype detect
+  edit
 
 Then (Detected Puppetfile as a ruby file):
   AssertEqual &filetype, 'ruby'
