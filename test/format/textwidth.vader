@@ -29,4 +29,51 @@ Expect puppet (comment is wrapped into more lines):
   file { 'foo':
     ensure => present,
   }
+-------------------------------------------------------------------------------
+Given puppet (long line before editing):
+  file { 'foo':
+    ensure => present,
+    source => ['puppet:///modules/very_long_module_name_that_will_not_stop'],
+  }
+
+Before (set textwidth):
+  set textwidth=76
+
+After (unset textwidth):
+  set textwidth=0
+
+Do (type in some more on long line):
+  jjA mode
+
+Expect puppet (text is wrapped to new line):
+  file { 'foo':
+    ensure => present,
+    source => ['puppet:///modules/very_long_module_name_that_will_not_stop'],
+    mode
+  }
+-------------------------------------------------------------------------------
+-- This next test is paired with a functionality that should be made better
+-- By keeping the cursor in the relative same spot, we could actually run
+-- indent and hashrocket formatting.
+Given puppet (badly indented long line before editing):
+  file { 'foo':
+    ensure => present,
+  source => ['puppet:///modules/very_long_module_name_that_will_not_stopXX'],
+  }
+
+Before (set textwidth):
+  set textwidth=76
+
+After (unset textwidth):
+  set textwidth=0
+
+Do (type in some more on long line):
+  jjAmode
+
+Expect puppet (text is wrapped to new line without reindenting):
+  file { 'foo':
+    ensure => present,
+  source => ['puppet:///modules/very_long_module_name_that_will_not_stopXX'],
+  mode
+  }
 

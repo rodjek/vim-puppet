@@ -54,7 +54,12 @@ function! puppet#format#Fallback(start_lnum, end_lnum) abort
 
   while l:lnum <= l:end_lnum
     if strlen(getline(l:lnum)) > &textwidth
-      call cursor(l:lnum)
+      "... useless call?
+      "call cursor(l:lnum)
+      " XXX: this tends to invert the two last characters. the gww command
+      " can't place the cursor on the position that will contain v:char since
+      " it does not exist yet, so we get moved back by one column before
+      " v:char is added to the line.
       execute 'normal! gww'
       " Checking if autoformat expand number of lines if yes, I will extend
       " range too
