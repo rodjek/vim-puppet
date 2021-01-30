@@ -1,0 +1,11 @@
+Given (simple Puppetfile):
+  forge "https://forgeapi.puppetlabs.com"
+  # comment
+  mod 'username-modulename', '1.2.3'
+
+Execute (trigger filetype detection):
+  file Puppetfile
+  edit
+
+Then (Detected Puppetfile as a ruby file):
+  AssertEqual &filetype, 'ruby'

@@ -1,0 +1,14 @@
+Execute (Filetype detection on a new empty file):
+  edit foo.epp
+  AssertEqual &filetype, 'epuppet'
+
+Given (epuppet file with leading tag):
+  <% if { %>
+  content
+
+Execute (trigger filetype detection):
+  file test_with_leading_tag.epp
+  edit
+
+Then (should be detected as epuppet):
+  AssertEqual &filetype, 'epuppet'

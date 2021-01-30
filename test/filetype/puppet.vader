@@ -1,0 +1,12 @@
+Given (simple puppet file):
+  # comment
+  class module::thisclass {
+    # ... do something
+  }
+
+Execute (trigger filetype detection):
+  file simple.pp
+  edit
+
+Then (Detected simple.pp as a puppet file):
+  AssertEqual &filetype, 'puppet'

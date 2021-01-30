@@ -1,4 +1,4 @@
-Given embeddedpuppet (template with litteral content puppet tags):
+Given epuppet (template with litteral content puppet tags):
   # Short litteral comment
   <% if $variable == '<%%somevalue%%>' { -%>
   MYVAR=<%= $variable %>
