@@ -14,7 +14,6 @@ setlocal softtabstop=2
 setlocal shiftwidth=2
 setlocal expandtab
 setlocal keywordprg=puppet\ describe\ --providers
-setlocal iskeyword-=_
 setlocal comments=sr:/*,mb:*,ex:*/,b:#
 setlocal commentstring=#\ %s
 
