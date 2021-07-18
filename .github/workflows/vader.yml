@@ -18,19 +18,19 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup Vim or Neovim
-        # You may pin to the exact commit or the version.
-        # uses: rhysd/action-setup-vim@b1e702ab8a74a58330316be5e8b17330522574cf
-        uses: rhysd/action-setup-vim@v1.2.6
+        uses: rhysd/action-setup-vim@v1
         id: vim
         with:
           neovim: ${{ matrix.neovim }}
-      - name: Test with Vader
-        uses: PsychoLlama/vader-action@v1
-        with:
-          # A glob which points to your vader test files.
-          test-pattern: test/**/*.vader
-          # Use neovim instead of vim.
-          neovim: ${{ matrix.neovim }}
+      - name: Run Vader unit tests
+        run: |
+          if [ "${{ matrix.neovim }}" = "true" ]; then
+            TESTVIM=nvim
+          else
+            TESTVIM=vim
+          fi
+          export TESTVIM
+          ./test/run-tests.sh
 
   vint:
     name: Lint code with Vint
