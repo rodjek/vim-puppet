@@ -31,3 +31,14 @@ jobs:
           test-pattern: test/**/*.vader
           # Use neovim instead of vim.
           neovim: ${{ matrix.neovim }}
+
+  vint:
+    name: Lint code with Vint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+      - name: Install vint
+        run: pip install --pre vim-vint
+      - name: Lint
+        run: vint --warning --enable-neovim ./after ./autoload ./compiler ./ftdetect ./ftplugin ./indent ./syntax
