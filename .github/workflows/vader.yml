@@ -9,8 +9,20 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  lint:
+    name: Lint code with Vint
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+      - name: Install vint
+        run: pip install --pre vim-vint
+      - name: Lint
+        run: vint --warning --enable-neovim ./after ./autoload ./compiler ./ftdetect ./ftplugin ./indent ./syntax
+
+  tests:
+    runs-on: ubuntu-latest
+    needs: lint
     strategy:
       matrix:
         neovim: [false, true]
@@ -31,14 +43,3 @@ jobs:
           fi
           export TESTVIM
           ./test/run-tests.sh
-
-  vint:
-    name: Lint code with Vint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
-      - name: Install vint
-        run: pip install --pre vim-vint
-      - name: Lint
-        run: vint --warning --enable-neovim ./after ./autoload ./compiler ./ftdetect ./ftplugin ./indent ./syntax
