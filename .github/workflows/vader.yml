@@ -1,0 +1,33 @@
+name: Tests on vim and neovim
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        neovim: [false, true]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Vim or Neovim
+        # You may pin to the exact commit or the version.
+        # uses: rhysd/action-setup-vim@b1e702ab8a74a58330316be5e8b17330522574cf
+        uses: rhysd/action-setup-vim@v1.2.6
+        id: vim
+        with:
+          neovim: ${{ matrix.neovim }}
+      - name: Test with Vader
+        uses: PsychoLlama/vader-action@v1
+        with:
+          # A glob which points to your vader test files.
+          test-pattern: test/**/*.vader
+          # Use neovim instead of vim.
+          neovim: ${{ matrix.neovim }}
