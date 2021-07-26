@@ -10,15 +10,19 @@ on:
 
 jobs:
   lint:
-    name: Lint code with Vint
+    name: Lint code with Vint and shellcheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v1
       - name: Install vint
         run: pip install --pre vim-vint
-      - name: Lint
+      - name: Lint vimscript files
         run: vint --warning --enable-neovim ./after ./autoload ./compiler ./ftdetect ./ftplugin ./indent ./syntax
+      - name: Install shellcheck
+        run: sudo apt-get -y install shellcheck
+      - name: Lint shell scripts
+        run: "shellcheck **/*.sh"
 
   tests:
     runs-on: ubuntu-latest
