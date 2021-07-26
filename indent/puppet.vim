@@ -4,7 +4,7 @@
 " Last Change:  2009 Aug 19
 " vim: set sw=4 sts=4:
 
-if exists("b:did_indent")
+if exists('b:did_indent')
     finish
 endif
 let b:did_indent = 1
@@ -13,11 +13,11 @@ setlocal autoindent smartindent
 setlocal indentexpr=GetPuppetIndent()
 setlocal indentkeys+=0],0)
 
-let b:undo_indent = "
+let b:undo_indent = '
     \ setlocal autoindent< smartindent< indentexpr< indentkeys<
-    \"
+    \'
 
-if exists("*GetPuppetIndent")
+if exists('*GetPuppetIndent')
     finish
 endif
 
@@ -33,7 +33,7 @@ function! s:PartOfInclude(lnum)
         if line !~ ',$'
             break
         endif
-        if line =~ '^\s*include\s\+[^,]\+,$' && line !~ '[=>]>'
+        if line =~# '^\s*include\s\+[^,]\+,$' && line !~ '[=>]>'
             return 1
         endif
     endwhile
@@ -80,7 +80,7 @@ function! GetPuppetIndent(...)
     " the same indent here would be premature since for that particular case
     " we want to instead get the indent level of the matching opening brace or
     " parenthenses.
-    if pline =~ '^\s*#' && line !~ '^\s*\(}\(,\|;\)\?$\|]:\|],\|}]\|];\?$\|)\)'
+    if pline =~# '^\s*#' && line !~# '^\s*\(}\(,\|;\)\?$\|]:\|],\|}]\|];\?$\|)\)'
         return ind
     endif
 
@@ -119,12 +119,12 @@ function! GetPuppetIndent(...)
     endif
 
     " Match } }, }; ] ]: ], ]; )
-    if line =~ '^\s*\(}\(,\|;\)\?$\|]:\|],\|}]\|];\?$\|)\)'
+    if line =~# '^\s*\(}\(,\|;\)\?$\|]:\|],\|}]\|];\?$\|)\)'
         let ind = indent(s:OpenBrace(v:lnum))
     endif
 
     " Don't actually shift over for } else {
-    if line =~ '^\s*}\s*els\(e\|if\).*{\s*$'
+    if line =~# '^\s*}\s*els\(e\|if\).*{\s*$'
         let ind -= &sw
     endif
     " Don't indent resources that are one after another with a ->(ordering arrow)

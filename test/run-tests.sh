@@ -14,8 +14,9 @@ if [ "$TESTVIM" == "vim" ]; then
   RUNVIM=vim
 elif [ "$TESTVIM" == "nvim" ] || [ -x "$(command -v nvim)" ]; then
   RUNVIM=nvim
-  export VADER_OUTPUT_FILE=$(mktemp)
-  trap "rm -f ${VADER_OUTPUT_FILE}" EXIT INT QUIT TERM
+  VADER_OUTPUT_FILE=$(mktemp)
+  export VADER_OUTPUT_FILE
+  trap 'rm -f ${VADER_OUTPUT_FILE}' EXIT INT QUIT TERM
 elif [ -x "$(command -v vim)" ]; then
   RUNVIM=vim
 else
@@ -23,13 +24,13 @@ else
   exit 1
 fi
 
-cd "${SCRIPT_FOLDER}/.."
+cd "${SCRIPT_FOLDER}/.." || exit
 
 if [ ! -d "vader.vim" ]; then
   git clone https://github.com/junegunn/vader.vim.git
 fi
 
-if [ -z $TEST_FILE ]; then
+if [ -z "$TEST_FILE" ]; then
   TEST_SUITE='test/**/*.vader'
 else
   TEST_SUITE=$TEST_FILE
