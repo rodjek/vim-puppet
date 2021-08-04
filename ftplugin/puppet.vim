@@ -16,6 +16,9 @@ setlocal expandtab
 setlocal keywordprg=puppet\ describe\ --providers
 setlocal comments=sr:/*,mb:*,ex:*/,b:#
 setlocal commentstring=#\ %s
+" adding : to iskeyword is tempting in order to make word movements skip over a
+" full resource name, however since : is used in many non-keyword contexts it
+" is a bad idea to add it to the option.
 
 setlocal formatoptions-=t formatoptions+=croql
 setlocal formatexpr=puppet#format#Format()
