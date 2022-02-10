@@ -34,6 +34,12 @@ Additional useful plugins
 Installation
 ------------
 
+With [Vim 8 packages](http://vimhelp.appspot.com/repeat.txt.html#packages):
+
+    git clone https://github.com/rodjek/vim-puppet.git ~/.vim/pack/plugins/start/vim-puppet
+
+With [Pathogen](https://github.com/tpope/vim-pathogen):
+
 If you're using [pathogen](https://github.com/tpope/vim-pathogen) to manage
 your vim modules (and if you're not, why aren't you), you can simply add this
 as a submodule in your `~/.vim/bundle/` directory.
