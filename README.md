@@ -51,6 +51,14 @@ My entire home directory is a git repository, so for me it's simply a case of
 If you're not using pathogen, you can just manually place the files in the
 appropriate places under `~/.vim/`
 
+With [Plug](https://github.com/junegunn/vim-plug)
+
+In your ~/.vimrc (or stdpath('config') . '/init.vim' for Neovim)
+
+    call plug#begin()
+      rodjek/vim-puppet
+    call plug#end()
+
 Testing
 -------
 
@@ -58,4 +66,3 @@ Testing is based on vader.vim testing framework, see:
 <https://github.com/junegunn/vader.vim> . To run full test suit use
 `./test/run-tests.sh`, this will also download vader.vim plugin to project's
 folder.
-
