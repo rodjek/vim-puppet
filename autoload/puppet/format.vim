@@ -1,6 +1,13 @@
 "
 " Simple format using puppet's l:indents and align hashrockets function
 function! puppet#format#Format() abort
+  " only allow reformatting through the gq command
+  " (e.g. Vim is in normal mode)
+  if mode() != 'n'
+    " do not fall back to internal formatting
+    return 0
+  endif
+
   let l:start_lnum = v:lnum
   let l:end_lnum = v:lnum + v:count - 1
   " Don't modify indentation or alignment if called by textwidth. We'll only
