@@ -5,8 +5,8 @@ vim.filetype.add({
     extension = {
         epp =
             function(path, bufnr)
-                path_wo_epp = path:sub(1,-5)
-                matched = vim.filetype.match({ buf = bufnr, filename = path_wo_epp })
+                local path_wo_epp = path:sub(1,-5)
+                local matched = vim.filetype.match({ buf = bufnr, filename = path_wo_epp })
                 if matched ~= nil and matched ~= 'mason' then
                     vim.b.epuppet_subtype = matched
                 end

@@ -22,6 +22,7 @@ jobs:
         run: pip install --pre vim-vint
       - name: Lint vimscript files
         run: vint --warning --enable-neovim ./after ./autoload ./compiler ./ftdetect ./ftplugin ./indent ./syntax
+      - uses: lunarmodules/luacheck@v1
       - uses: ludeeus/action-shellcheck@master
 
   tests:
