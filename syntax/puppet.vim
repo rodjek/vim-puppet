@@ -283,7 +283,7 @@ hi def link puppetComment         Comment
 hi def link puppetIncludeFunction Include
 hi def link puppetStdLibFunction  puppetFunction
 hi def link puppetFunction        Function
-hi def link puppetDeprecated      Ignore
+hi def link puppetDeprecated      Todo
 hi def link puppetDebug           Debug
 
 if g:puppet_display_errors
