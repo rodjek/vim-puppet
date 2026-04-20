@@ -63,3 +63,103 @@ Do (New line):
 Expect puppet (indent stays the same):
   $baz = '[#'
   $qux
+
+-------------------------------------------------------------------------------
+Given puppet (empty line in heredoc):
+  class blah {
+    $value = @(HERE)
+      empty line in here
+  
+      should not affect indentation after here
+      | HERE
+  
+    file { '/tmp/somefile':
+      ensure => 'present',
+    }
+  }
+
+Do (full text indent with '='):
+  :syntax sync fromstart
+  gg=G
+
+Expect puppet (indentation shouldn't move):
+  class blah {
+    $value = @(HERE)
+      empty line in here
+  
+      should not affect indentation after here
+      | HERE
+  
+    file { '/tmp/somefile':
+      ensure => 'present',
+    }
+  }
+
+-------------------------------------------------------------------------------
+Given puppet (empty line in string):
+  class blah {
+    $value = 'empty line in here
+  
+      should not affect indentation after here'
+  
+    file { '/tmp/somefile':
+      ensure => 'present',
+    }
+  }
+
+Do (full text indent with '='):
+  :syntax sync fromstart
+  gg=G
+
+Expect puppet (indentation shouldn't move):
+  class blah {
+    $value = 'empty line in here
+  
+      should not affect indentation after here'
+  
+    file { '/tmp/somefile':
+      ensure => 'present',
+    }
+  }
+
+-------------------------------------------------------------------------------
+Given puppet (line in string with only spaces):
+  class blah {
+    $value = 'next line contains spaces
+        
+      and should stay the same'
+  }
+
+Do (full text indent with '='):
+  :syntax sync fromstart
+  gg=G
+
+Expect puppet (spaces within string should remain there):
+  class blah {
+    $value = 'next line contains spaces
+        
+      and should stay the same'
+  }
+
+-------------------------------------------------------------------------------
+Given puppet (line in heredoc with only spaces):
+  class blah {
+    $value = @(HERE)
+      next line contains spaces
+        
+      and should stay the same
+      | HERE
+  }
+
+Do (full text indent with '='):
+  :syntax sync fromstart
+  gg=G
+
+Expect puppet (spaces within string should remain there):
+  class blah {
+    $value = @(HERE)
+      next line contains spaces
+        
+      and should stay the same
+      | HERE
+  }
