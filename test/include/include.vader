@@ -1,0 +1,23 @@
+Given puppet (All possible includes in manifest):
+  include apache::config
+  include('apache::package')
+  include(
+    'apache::settings',
+    'apache::service'
+  )
+  contain apache::box::inside
+  contain('apache::bag::of::things')
+  contain(
+    'apache::field',
+    'apache::whole_world'
+  )
+  require apache::important
+  require('apache::important::too')
+  require(
+    'apache::important::three',
+    'apache::important::nan'
+  )
+
+Execute (list all discovered include files):
+  let file_list = execute(':checkpath!')
+  AssertEqual "--- Included files in path ---\nmanifests/config.pp\nmanifests/package.pp\nmanifests/settings.pp\nmanifests/service.pp\nmanifests/box/inside.pp\nmanifests/bag/of/things.pp\nmanifests/field.pp\nmanifests/whole_world.pp\nmanifests/important.pp\nmanifests/important/too.pp\nmanifests/important/three.pp\nmanifests/important/nan.pp", file_list
