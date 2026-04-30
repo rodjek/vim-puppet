@@ -41,11 +41,11 @@ jobs:
         # noble:            vim 9.1.0016    neovim 0.9.5
         # mageia 9:         vim 9.1.071     neovim 0.9.5
         # mageia cauldron:  vim 9.1.0719    neovim 0.10.1
-        # epuppet detestion added in filetype.vim in vim 8.2.2402
+        # epuppet detection added in filetype.vim in vim 8.2.2402
         # neovim pulled this epuppet detection in nvim 0.5.0
         # filetype detection done with filetype.lua from neovim 0.8.0
         # neovim < 0.9.0 segfaut on github action (even the one installed from apt)
-        editor: ["vim-v8.0.0000", "vim-stable", "vim-v9.1.0719", "nvim-v0.9.0", "nvim-v0.9.5", "nvim-v0.10.1"]
+        editor: ["vim-v8.0.0000", "vim-stable", "vim-v9.1.0719", "nvim-v0.4.4", "nvim-v0.5.1", "nvim-v0.9.0", "nvim-v0.9.5", "nvim-v0.10.1"]
 
     steps:
       - uses: actions/checkout@v4
