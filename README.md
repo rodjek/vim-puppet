@@ -61,9 +61,19 @@ With [Plug](https://github.com/junegunn/vim-plug)
 
 In your ~/.vimrc (or stdpath('config') . '/init.vim' for Neovim)
 
-    call plug#begin()
-      rodjek/vim-puppet
-    call plug#end()
+```vim
+ call plug#begin()
+   Plug 'rodjek/vim-puppet'
+ call plug#end()
+```
+
+if you want to load only for puppet type use (pay attention to the * for epupet type)
+
+```vim
+ call plug#begin()
+   Plug 'rodjek/vim-puppet', { 'for': ['puppet', '*epuppet'] }
+ call plug#end()
+```
 
 Testing
 -------

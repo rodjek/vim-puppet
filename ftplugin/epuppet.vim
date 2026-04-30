@@ -4,8 +4,8 @@
 " URL:                  https://github.com/rodjek/vim-puppet
 " Last Change:          2019-09-01
 
-" Only do this when not done yet for this buffer
-if exists('b:did_ftplugin')
+" since this filetype can be loaded along a subtype, don't test with b:did_ftplugin
+if (exists('b:did_ftplugin_epuppet'))
   finish
 endif
 
@@ -17,47 +17,9 @@ let s:undo_ftplugin = ''
 if has('win32')
   let s:browsefilter = "All Files (*.*)\t*.*\n"
 else
-    let s:browsefilter = "All Files (*)\t*\n"
+  let s:browsefilter = "All Files (*)\t*\n"
 endif
 let s:match_words = ''
-
-if !exists('g:epuppet_default_subtype')
-  let g:epuppet_default_subtype = 'sh'
-endif
-
-if &filetype =~# '^epuppet\.'
-    let b:epuppet_subtype = matchstr(&filetype,'^epuppet\.\zs\w\+')
-elseif !exists('b:epuppet_subtype')
-  let b:epuppet_subtype = matchstr(substitute(expand('%:t'),'\c\%(\.epp\)\+$','',''),'\.\zs\w\+\%(\ze+\w\+\)\=$')
-  " TODO instead of listing exceptions like this, can we instead recognize
-  "  extension -> type mapping?
-  if b:epuppet_subtype ==? 'rhtml'
-    let b:epuppet_subtype = 'html'
-  elseif b:epuppet_subtype ==? 'rb'
-    let b:epuppet_subtype = 'ruby'
-  elseif b:epuppet_subtype ==? 'yml'
-    let b:epuppet_subtype = 'yaml'
-  elseif b:epuppet_subtype ==? 'js'
-    let b:epuppet_subtype = 'javascript'
-  elseif b:epuppet_subtype ==? 'txt'
-    " Conventional; not a real file type
-    let b:epuppet_subtype = 'text'
-  elseif b:epuppet_subtype ==? 'py'
-    let b:epuppet_subtype = 'python'
-  elseif b:epuppet_subtype ==? 'rs'
-    let b:epuppet_subtype = 'rust'
-  elseif b:epuppet_subtype ==?''
-    let b:epuppet_subtype = g:epuppet_default_subtype
-  endif
-endif
-
-if exists('b:epuppet_subtype') && b:epuppet_subtype != '' && b:epuppet_subtype !=? 'epuppet'
-  exe 'runtime! ftplugin/'.b:epuppet_subtype.'.vim ftplugin/'.b:epuppet_subtype.'_*.vim ftplugin/'.b:epuppet_subtype.'/*.vim'
-endif
-unlet! b:did_ftplugin
-
-runtime! ftplugin/sh.vim
-unlet! b:did_ftplugin
 
 " Override our defaults if these were set by an included ftplugin.
 if exists('b:undo_ftplugin')
@@ -77,8 +39,11 @@ let s:include = &l:include
 let s:path = &l:path
 let s:suffixesadd = &l:suffixesadd
 
+if (exists('b:did_ftplugin'))
+  unlet b:did_ftplugin
+endif
 runtime! ftplugin/puppet.vim
-let b:did_ftplugin = 1
+let b:did_ftplugin_epuppet = 1
 
 " Combine the new set of values with those previously included.
 if exists('b:undo_ftplugin')

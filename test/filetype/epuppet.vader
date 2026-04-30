@@ -1,33 +1,67 @@
-Execute (Filetype detection on a new empty file):
+Execute (Setup default subtype to Undefined):
+  Save g:epuppet_default_subtype
+  if exists('g:epuppet_default_subtype')
+    unlet g:epuppet_default_subtype
+  end
+
+Execute (Filetype detection on a new empty file without g:epuppet_default_subtype defined by user):
   edit foo.epp
-  AssertEqual &filetype, 'epuppet'
+  AssertEqual &filetype, 'sh.epuppet'
+  " new is needed before bedelete https://github.com/junegunn/vader.vim/issues/134
+  new
+  " bdelete is needed otherwise g:epuppet_default_subtype is not reseted for the next tests
+  bdelete foo.epp
 
-Execute (epuppet test_with_leading_tag):
+Execute (epuppet test_with_leading_tag without g:epuppet_default_subtype defined by user):
   edit test/test-files/test_with_leading_tag.epp
-  AssertEqual &filetype, 'epuppet'
+  AssertEqual &filetype, 'sh.epuppet'
+  new
+  bdelete test/test-files/test_with_leading_tag.epp
 
-Execute (TODO: epuppet perl with shebang):
+Execute (Setting default subtype to 'conf'):
+  let g:epuppet_default_subtype = 'conf'
+
+Execute (Filetype detection on a new empty file with g:epuppet_default_subtype defined by user at 'conf'):
+  edit foo.epp
+  AssertEqual &filetype, 'conf.epuppet'
+
+Execute (epuppet test_with_leading_tag with g:epuppet_default_subtype defined by user at 'conf'):
+  edit test/test-files/test_with_leading_tag.epp
+  AssertEqual &filetype, 'conf.epuppet'
+
+Execute (Restore default subtype):
+  Restore g:epuppet_default_subtype
+
+Execute (epuppet perl with shebang):
   edit test/test-files/test_perl_with_shebang.epp
-  AssertEqual &filetype, 'epuppet'
-  AssertEqual b:epuppet_subtype, 'perl'
+  AssertEqual &filetype, 'perl.epuppet'
 
 # We don't need to parse the shebang for shell since sh is the default subtype
 Execute (epuppet default to shell):
   edit test/test-files/test_shell_with_shebang.epp
-  AssertEqual &filetype, 'epuppet'
-  AssertEqual b:epuppet_subtype, 'sh'
+  AssertEqual &filetype, 'sh.epuppet'
 
 Execute (epuppet shell with extension):
   edit test/test-files/test_shell_with_extension.sh.epp
-  AssertEqual &filetype, 'epuppet'
-  AssertEqual b:epuppet_subtype, 'sh'
+  AssertEqual &filetype, 'sh.epuppet'
 
 Execute (epuppet php with extension):
   edit test/test-files/test_php_with_extension.php.epp
-  AssertEqual &filetype, 'epuppet'
-  AssertEqual b:epuppet_subtype, 'php'
+  AssertEqual &filetype, 'php.epuppet'
 
-Execute (TODO: epuppet apache conf with path and extension):
+Execute (epuppet apache conf with path and extension):
   edit test/test-files/etc/apache2/test.conf.epp
-  AssertEqual &filetype, 'epuppet'
-  AssertEqual b:epuppet_subtype, 'apache'
+  AssertEqual &filetype, 'apache.epuppet'
+
+# non sensical type to test corner caser
+Execute (epuppet php with double subtype extension):
+  edit test/test-files/test.php.php.epp
+  AssertEqual &filetype, 'php.epuppet'
+
+Execute (epuppet php with double epuppet extension):
+  edit test/test-files/test.php.epp.epp
+  AssertEqual &filetype, 'php.epuppet'
+
+Execute (epuppet php with reversed extension):
+  edit test/test-files/test.epp.php
+  AssertEqual &filetype, 'php'
